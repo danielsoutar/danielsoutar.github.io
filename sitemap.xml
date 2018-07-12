@@ -27,6 +27,12 @@
   </url>
   
   <url>
+    <loc>https://danielsoutar.github.io/posts/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://danielsoutar.github.io/projects/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
