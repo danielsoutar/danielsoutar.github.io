@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Uni projects on Daniel Soutar</title>
+    <link>https://danielsoutar.github.io/projects/uni/</link>
+    <description>Recent content in Uni projects on Daniel Soutar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-uk</language>
+    
+	<atom:link href="https://danielsoutar.github.io/projects/uni/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>
