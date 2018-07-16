@@ -6,9 +6,19 @@
     <description>Recent content in Projects on Daniel Soutar</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
+    <lastBuildDate>Mon, 16 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://danielsoutar.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>My First Project</title>
+      <link>https://danielsoutar.github.io/projects/my_first_project/</link>
+      <pubDate>Mon, 16 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://danielsoutar.github.io/projects/my_first_project/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
