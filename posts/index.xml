@@ -6,27 +6,29 @@
     <description>Recent content in Posts on Daniel Soutar</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Wed, 11 Jul 2018 22:12:33 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 17 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://danielsoutar.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>My First Post</title>
-      <link>https://danielsoutar.github.io/posts/my-first-post/</link>
-      <pubDate>Wed, 11 Jul 2018 22:12:33 +0800</pubDate>
+      <title>My Second Post</title>
+      <link>https://danielsoutar.github.io/posts/my-second-post/</link>
+      <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://danielsoutar.github.io/posts/my-first-post/</guid>
-      <description>THIS IS REALLY GOOD IF THIS WORKS</description>
+      <guid>https://danielsoutar.github.io/posts/my-second-post/</guid>
+      <description>Very creative on these two post titles. Promise that&amp;rsquo;ll change for future ones (assuming they get written&amp;hellip;).
+This post&amp;rsquo;s my last one for a short while, I suspect.</description>
     </item>
     
     <item>
-      <title>My Second Post</title>
-      <link>https://danielsoutar.github.io/posts/my-second-post/</link>
-      <pubDate>Wed, 11 Jul 2018 21:47:00 +0800</pubDate>
+      <title>My First Post</title>
+      <link>https://danielsoutar.github.io/posts/my-first-post/</link>
+      <pubDate>Mon, 17 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://danielsoutar.github.io/posts/my-second-post/</guid>
-      <description>And&amp;hellip;?</description>
+      <guid>https://danielsoutar.github.io/posts/my-first-post/</guid>
+      <description>Well here we are. My first proper post.
+I suppose I should clarify - I was mucking about with the Hugo framework, which is used to build this site.</description>
     </item>
     
   </channel>
