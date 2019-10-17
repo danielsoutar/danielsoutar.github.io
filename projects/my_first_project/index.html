@@ -41,7 +41,7 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
 
 <meta itemprop="datePublished" content="2018-08-23T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-08-23T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1717">
+<meta itemprop="wordCount" content="1723">
 
 
 
@@ -53,7 +53,7 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -98,11 +98,6 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
       
       
 
-
-  <a href="https://www.facebook.com/daniel.a.soutar" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
-    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
-
-  </a>
 
 
 
@@ -161,7 +156,7 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
 
 <p>DLX at its heart is simply another general-purpose brute-force search algorithm. In other words, given a problem, it systematically evaluates across all valid paths in the search space to find a solution(s). The difference is that DLX is a clever implementation of this basic idea. It models the problem as a <a href="https://en.wikipedia.org/wiki/Logical_matrix">binary matrix</a>, where the rows represent options and the columns represent the constraints that the solution must satisfy. 1s fill the spaces where a given option satisfies a given constraint. Clearly, an option might satisfy multiple constraints. The challenge is then to find any or all sets of options such that each constraint is satisfied, and satisfied exactly once. This is known as an <a href="https://en.wikipedia.org/wiki/Exact_cover">Exact Cover problem</a>.</p>
 
-<p>As it turns out, Su Doku (meaning &lsquo;number place&rsquo; in Japanese) can also be represented as an exact cover problem. The options are the permutations of row-column-value tuples (for a 9x9 grid, this means 9<sup>3</sup>, or 729 rows). The constraints are the requirements that each row, column, nonet (the technical term for the mini-grids) have exactly 1 instance of each of the N values, where N is the size of the grid. These conditions are sufficient on their own, although you can also add the constraint that each cell has exactly one number. This is merely to aid the solver and make things a little faster.</p>
+<p>As it turns out, Su Doku (meaning &lsquo;number place&rsquo; in Japanese) can also be represented as an exact cover problem. The options are the permutations of row-column-value triples (for a 9x9 grid, this means 9<sup>3</sup>, or 729 rows). The constraints are the requirements that each row, column, nonet (the technical term for the mini-grids) have exactly 1 instance of each of the N values, where N is the size of the grid. These conditions are sufficient on their own, although you can also add the constraint that each cell has exactly one number. This is merely to aid the solver and make things a little faster.</p>
 
 <p>So why not just use a big array? Well in this case the binary matrix is sparse, which is just a fancy way of saying it has a lot of 0s and relatively little else. This, as it turns out, is quite wasteful memory-wise. One way to more efficiently store a sparse matrix is to use a 2D quadruply linked list (yes, really). Each of the nodes will represent a 1 in the matrix, and accessing the next 1 is simply a matter of traversing to the next node in the appropriate direction.</p>
 
@@ -201,7 +196,7 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
 <pre><code>set r ← O[k] and c ← C[r];  // Following call to search(k+1)
 </code></pre>
 
-<p>is meant to represent <strong>removing</strong> the node at <code>O[k]</code>, since that node is no now longer part of the solution. In fact setting <code>r</code> doesn&rsquo;t make sense since we restored the structure in the call <code>search(k+1)</code>, and we are not out of scope, so we don&rsquo;t need to modify <code>r</code> at all in this line. Likewise, setting <code>r</code> in most languages does not imply that the value (in this case, <code>O[k]</code>) is discarded appropriately! The clearer way of expressing the desired operation would be either:</p>
+<p>is meant to represent restoring the value of <code>r</code>. In fact setting <code>r</code> doesn&rsquo;t make sense (assuming <code>r</code> is a local variable) since we restored the structure in the call <code>search(k+1)</code>, and we are not out of scope, so we don&rsquo;t need to modify <code>r</code> at all in this line. Likewise, setting <code>r</code> in most languages does not imply that the value (in this case, <code>O[k]</code>) is discarded appropriately! Additionally, if one wished to print out the solver&rsquo;s progress, the above line wouldn&rsquo;t work! The the desired operation would be either:</p>
 
 <pre><code>set O[k] ← NULL and c ← C[r];
 </code></pre>
@@ -245,7 +240,7 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
     <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
-    &copy; 2018 Daniel Soutar
+    &copy; 2019 Daniel Soutar
   </a>
   </div>
 </footer>
