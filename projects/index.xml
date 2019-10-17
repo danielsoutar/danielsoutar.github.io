@@ -6,15 +6,15 @@
     <description>Recent content in Projects on Daniel Soutar</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Sat, 31 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 17 Oct 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://danielsoutar.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Eagle-Eyed: Faster convolutions with the Winograd algorithm (Part 1)</title>
+      <title>Eagle-Eyed: Faster convolutions with Winograd (Part 1)</title>
       <link>https://danielsoutar.github.io/projects/winograd_1/</link>
-      <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://danielsoutar.github.io/projects/winograd_1/</guid>
       <description>With many fields such as deep learning, I like to think that there are &amp;lsquo;definitive pages&amp;rsquo; on the Internet.</description>
