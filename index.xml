@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>Eagle-Eyed: Faster convolutions with Winograd (Part 1)</title>
+      <title>Faster convolutions with Winograd (Part 1)</title>
       <link>https://danielsoutar.github.io/projects/winograd_1/</link>
       <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
       
@@ -57,6 +57,16 @@ This post&amp;rsquo;s my last one for a short while, I suspect.</description>
       
       <guid>https://danielsoutar.github.io/contact/</guid>
       <description>Please enter your details below. If you&amp;rsquo;re trying to connect with me on anything work-related then I would kindly suggest my LinkedIn profile instead.</description>
+    </item>
+    
+    <item>
+      <title>Faster convolutions with Winograd (Part 2)</title>
+      <link>https://danielsoutar.github.io/projects/winograd_2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://danielsoutar.github.io/projects/winograd_2/</guid>
+      <description>In this post I&amp;rsquo;ll be introducing the Winograd algorithm, along with some snazzy pictures.
+If you haven&amp;rsquo;t read part 1, I highly recommend it.</description>
     </item>
     
   </channel>
