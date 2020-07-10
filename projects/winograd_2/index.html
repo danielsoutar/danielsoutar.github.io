@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Daniel Soutar  | Faster convolutions with Winograd (Part 2)</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.73.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.ab4b67a3ea25990fa8279f3b7ef08b61.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Faster convolutions with Winograd (Part 2)" />
+<meta property="og:description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://danielsoutar.github.io/projects/winograd_2/" />
+<meta property="article:published_time" content="2020-01-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-01-12T00:00:00+00:00" />
+<meta itemprop="name" content="Faster convolutions with Winograd (Part 2)">
+<meta itemprop="description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs.">
+<meta itemprop="datePublished" content="2020-01-12T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-01-12T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="3239">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Faster convolutions with Winograd (Part 2)"/>
+<meta name="twitter:description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs."/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://danielsoutar.github.io" class="f3 fw2 hover-white no-underline white-90 dib">
+      Daniel Soutar
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/projects/" title="Projects page">
+              Projects
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+  <a href="https://www.linkedin.com/in/daniel-soutar" class="link-transition linkedin link dib z-999 pt3 pt0-l mr2" title="LinkedIn link">
+    <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+  </a>
+
+
+  <a href="https://github.com/danielsoutar" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
+    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+  </a>
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        PROJECTS
+      </p>
+      <h1 class="f1 athelas mb1">Faster convolutions with Winograd (Part 2)</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2020-01-12T00:00:00Z">January 12, 2020</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><!-- TODO: Move this series into the 'Posts' section rather than 'Projects'. -->
+<p>In this post I&rsquo;ll be introducing the Winograd algorithm, along with some snazzy pictures.</p>
+<p>If you haven&rsquo;t read part 1, I highly recommend it. That post gives a good motivation for why we want Winograd to start with.</p>
+<p>To remind you, Winograd is the algorithm used in MKL-DNN, cuDNN, Theano, Tensorflow, and PyTorch for computing 3x3 convolutions<sup>1</sup>. For some performance figures against the naive algorithm and <em>im2col</em>, a fast convolution algorithm, look for part 3 of this series. Those figures will show that the last 16 or so minutes of your life reading this post and the previous one were not, in fact, a complete waste of time.</p>
+<p>For this post, we&rsquo;ll start off with an example, and then slowly uncover the mathematical background behind it. Then we&rsquo;ll step through the algorithm together. Alongside will be a smattering of pretty pictures, that try to give a visual intuition for how the computation is performed.</p>
+<p>As with the previous post, some basic understanding of convolutions is a prerequisite - and knowing what matrix-multiplies are, since that&rsquo;s what Winograd is built around. A beautiful intuition for these can be found on 3Blue1Brown&rsquo;s incredible &lsquo;Essence of Linear Algebra&rsquo; video series <a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">here</a>.</p>
+<h2 id="some-elephants-in-the-room">Some Elephants in the Room</h2>
+<p>Before we dive in, it&rsquo;s worth noting three things.</p>
+<p>The first is that <em>im2col</em>, although a fast algorithm, is fairly memory-hungry (see my previous post for more on this), which motivates the search for a better algorithm. The second thing is, surprisingly, <em>im2col</em> does not do the minimal number of floating-point (i.e. real) multiplications required for a convolution!</p>
+<p>This may seem surprising, especially if I tell you that a <strong>single</strong> dot product <em>does</em> do the provably minimal number of real multiplications. That is, functionally speaking, you cannot do a dot product with less than <em>n</em> floating-point multiplications, where <em>n</em> is the size of the vectors. But once you start doing multiple dot products with the same filter, it&rsquo;s a different story. Winograd is not just fast, but is faster than <em>im2col</em> primarily through this minimal number of multiplications at the expense of some comparatively small overhead.</p>
+<p>The more mathematically-familiar readers among you might now be thinking, &ldquo;well isn&rsquo;t that exactly what the FFT is for?&ldquo;<sup>2</sup>. You&rsquo;d be absolutely correct. But FFTs are problematic - there is the substantial overhead and memory involved in using complex numbers, and writing a good FFT routine is pretty hard. But the <em><strong>key</strong></em> reason, my third important point, is that the ubiquitous 3x3 filter size usually isn&rsquo;t large enough for the FFT to claw back the deficit over <em>im2col</em>. The exception is usually with very deep inputs, large images, or very large batch sizes. All of which are much more niche applications.</p>
+<p>There is a delicate but very valuable middle-ground here, where <em>im2col</em> is at the mercy of memory issues, and the FFT is too heavyweight. A featherweight FFT would be perfect - the metaphoric &lsquo;Coke Light&rsquo; of FFTs, if you will. As it turns out, that is pretty much exactly what Winograd is. Read on&hellip;</p>
+<h2 id="the-contrived-example">The Contrived Example</h2>
+<p>I now present to you what is surely the most ridiculous motivation for any algorithm on the internet. Say we have a 1D input of length 4, a 1D filter of length 3, stride 1, and using valid padding. If we do a 1D convolution:</p>
+<img src="/images/contrived_example_naive.svg" height="170"/>
+<p>We see that the output should be 1D, with 2 elements. Counting the number of real multiplications, we have 6, and 4 real adds. In computer hardware we typically have a <code>fma</code> (fused multiply-add) instruction that does the equivalent of <code>x_0 = x_1 * x_2 + x_0</code>, given how common this operation is. You can essentially treat the number of <code>fma</code>s in a convolution implementation as a proxy for the overall work done. In the above case, that would be 6 <code>fma</code>s in total (starting with <code>x_0 = 0</code> and accumulating the results). Now take a look at the Winograd variant:</p>
+<img src="/images/contrived_example_winograd.svg" height="80"/>
+<p>where:</p>
+<img src="/images/contrived_example_winograd_equations.svg" height="160"/>
+<p>We&rsquo;ll save&hellip;</p>
+<p style="text-align: center; font-weight: bold; font-style: italic">two</p>
+<p>multiplications (or equivalently <code>fma</code>s), at the cost of:</p>
+<ul>
+<li>4 additions for the data<sup>3</sup></li>
+<li>4 additions for the filter</li>
+<li>2 multiplications by a constant, also for the filter</li>
+<li>4 additions to add the intermediate terms for the final results</li>
+</ul>
+<p>I genuinely wonder if Shmuel Winograd (hence the name) considered throwing in the towel and just retiring when he found this was the result of all that work. But it was not in vain! As it turns out, this is the provably minimal number of multiplications for a 3-element filter computing 2 outputs (assuming a stride of 1).</p>
+<h2 id="economies-of-scale">Economies of Scale</h2>
+<p>The other interesting observation from that example is that the number of multiplies is now linear with the size of this particular input. Instead of 6 <code>fma</code>s, we now only do 4. This generalises to arbitrary dimensions! If we extend the 1D case to 2D, we&rsquo;ll have a 3x3 filter, and a 4x4 input. In that case, we &lsquo;nest&rsquo; the Winograd routine with itself, and now  we do 16 <code>fma</code>s (4 * 4 = 16) instead of 36 (9 * 4 = 36), a 2.25x saving.</p>
+<p>We won&rsquo;t be able to make arbitrarily large tiles with this property (or rather, there will be no gains in doing so), but this should pique your curiosity. We suddenly can do less than half the number of <code>fma</code> instructions for the same result.</p>
+<p>The reason why we can basically ignore the cost of transforms in this analysis is to do with complexity and how convolutions scale. Andrew Lavin, one of the authors from the Winograd for DNNs paper in 2015, has <a href="https://github.com/andravin/wincnn/blob/master/FAQ.md">a great GitHub repo that mentions this</a>, but I&rsquo;ll summarise here. Let N equal the mini-batch size, H and W the height and width of the input, C the number of input channels, and K the number of output channels.</p>
+<p>For the direct method, we do approximately NHWCK9 <code>fma</code> instructions for a 3x3 with stride 1 (minor padding considerations notwithstanding). For Winograd, the input transform is O(NHWC), the filter transform O(CK), and the output transform is O(NHWK). The cost of the multiplication stage is O(NHWCK4).</p>
+<p>For small inputs, there is little to no gain at all using Winograd over the direct method, as the first example showed. But for sufficiently <em>large</em> inputs, the costs of these transforms are <em>additive</em>, not multiplicative. The dominant cost is in the multiplication stage. And that is 2.25x less than the naive method (9 / 4 = 2.25). Provided each of the factors N, H, W, C, and K are all large enough, the cost of the multiplication stage dominates, and the 2.25x saving becomes more and more apparent. So Winograd <em>scales</em> better than the direct method.</p>
+<h2 id="convolutions-as-polynomial-multiplication">Convolutions as polynomial multiplication</h2>
+<p>So what goes into that curious example? The secret, as is often in mathematics, is discovering identities. Cross-correlations (which are the actual operation performed in <em><strong>convolutional</strong></em> neural networks) can be expressed as follows:</p>
+<p><img src="/images/cross-correlation-equation.svg" height="70" width="12" /></p>
+<p>Now I&rsquo;m going to remind you of everyone&rsquo;s least favourite acronym: FOIL. Remember these?</p>
+<p><img src="/images/foil-example.svg" height="70" width="12" /></p>
+<p>These are for linear equations (or polynomials of degree 1). But this operation generalises to arbitrary polynomials (here we assume they are of the same degree). Assuming <em>a</em> and <em>b</em> are the vectors of coeffients:</p>
+<p><img src="/images/foil-equation.svg" height="70" width="12" /></p>
+<p>If you ignore the <em>x</em> s, we have a structurally identical operation to convolution: so convolution can be interpreted as polynomial multiplication! If you&rsquo;ve heard of a vector space (don&rsquo;t worry if not), the idea that polynomials (specifically their coefficients) comprise a vector space should seem intuitive. You can add polynomials together, you can scale them by some scalar value, and as a bonus, we&rsquo;ve just demonstrated we can multiply them.</p>
+<p>What this means is that if we find a way to optimise computing polynomial multiplication, then by extension we have found an optimisation for computing convolutions, and vice versa. And there is one, that Winograd makes use of. This optimisation is known as <em>Lagrange Interpolation</em>.</p>
+<h2 id="reducing-multiplications-via-interpolation">Reducing multiplications via interpolation</h2>
+<p>A quick reminder - interpolation is the procedure of finding the values of new data-points between known data-points. Polynomial interpolation is the procedure of finding a polynomial of the lowest possible degree that fits through said data-points.</p>
+<p>How does that help us? Well we all &lsquo;know&rsquo; (without having a proof for why) that the minimum distance between any two points on a plane is a straight line, and this line is unique. What is perhaps less well known is that this is true for any degree of polynomial provided you have enough data points. In other words, 2 points <strong>uniquely</strong> determine a line (or a polynomial of degree 1). Likewise, 3 points uniquely determine a polynomial of degree 2, 4 points for degree 3, and so on. Lagrange Interpolation exploits this information and only requires a linear number of real multiplications to do polynomial multiplication. The drawback is that if you add more points, you need to re-do the entire calculation. But since our filters have fixed sizes, this isn&rsquo;t an issue.</p>
+<p>So first you transform the 2D input and filter (treating these as systems of polynomial equations) around some ideal interpolation points like 0, 1, and -1 on the x-axis (the values of the polynomials are determined on the y-axis). We pick these points because they&rsquo;re nice and simple, and do not require any complicated multiplications - just addition and subtraction. For the sizes we use in Winograd, we&rsquo;ll see that we require 4 interpolation points, but only ever use 0, 1, and -1. This wizardry is done by using <em>homogenous coordinates</em>, which are often used in computer graphics for simplifying transforms.</p>
+<p>The idea is to transform the input and filter into a new space - that is, into the space of homogenous coordinates. Provided you have enough data to work with, you then do the Hadamard product (i.e. pointwise-multiplication) on the tranformed input and filter. Finally, you do Lagrange interpolation on the transformed points to derive the (unique) coefficients of a polynomial equation (or system of equations). And those are the outputs of a direct convolution!</p>
+<h2 id="runges-phenomenon-and-limits-of-scale">Runge&rsquo;s Phenomenon and limits of scale</h2>
+<p>Now what I&rsquo;ve just described sounds great and all - and you&rsquo;d rightly wonder if we can apply this saving to arbitrarily large outputs. For Winograd, we commonly use a 3x3 filter, with a 2x2 output. As a reminder, this has the 2.25x saving mentioned earlier, as we do 16 multiplications instead of the 36 of the direct method. If we use a 4x4 output, we do 36 multiplications instead of 144 of the direct method - a 4x saving. So increasing the size of the input and output tiles can yield a major saving, as we essentially amortise the cost of several dot products.</p>
+<p>Of course, there are decreasing returns with this - but there are also costs to doing so as well. One of them is that the sizes of the transforms for the filter and input increase quadratically with the tile sizes. For our examples of 2x2 output tiles (and 4x4 input tiles) and 4x4 output tiles (and 6x6 input tiles), this isn&rsquo;t really a problem, but it limits how large these tiles can be. Even by around 10x10 input tile sizes, there is little to no advantage against the direct method by that point.</p>
+<p>The other major issue is to do with numeric precision. A curious phenomenon with polynomials is that as you increase the number of <em>equidistant</em> points to do interpolation with, because of their need to be continuous and smooth (i.e. they cannot &lsquo;break&rsquo; or have sharp edges), they flex and oscillate in unexpected ways in the bits between the points, particularly at the edges of the interval. You can actually see this in real life with a suitably flexible ruler. If you pin the ruler down at a set of equidistant points, you&rsquo;ll notice the same trend.</p>
+<p>This oscillation is bad. With polynomial interpolation, we&rsquo;re trying to infer a function based on several data points. So if you have this undesirable oscillation, then you have an increasingly less accurate approximation of the true function. So your convolution becomes progressively less accurate, numerically speaking. This is reflected in the increasingly less-desirable interpolation points that you&rsquo;re required to use (even with homogenous coordinates), which are found in the transforms.</p>
+<p>The upshot of these two drawbacks is a) you can&rsquo;t use arbitrarily large input and output tile sizes, because the transforms become too expensive and b) even if you can mitigate those costs, the inaccuracy that occurs with large tile sizes means you would have garbage output. But that&rsquo;s fine, because the FFT can be used instead for these inputs where larger tiles would have been used.</p>
+<p>NVIDIA notably did do a workshop paper in 2017 exploring larger tiles. They did F(9x9, 5x5), meaning a 5x5 filter with a 9x9 output tile. Following some clever scalings and choices of interpolation points, they were able to get acceptable levels of numeric error - notably reducing the maximum relative error by two orders of magnitude compared to the un-scaled version. Still less precise than the direct method, but neural networks are pretty resilient to imprecision, so this is possibly an acceptable trade-off depending on the application.</p>
+<h2 id="winograd-step-by-step">Winograd, step-by-step</h2>
+<p>Now that that&rsquo;s all out of the way, let&rsquo;s try doing Winograd on a real example. Say we have an input of size 50x50, with 1 of 32 input channels visualised below:</p>
+<p><img src="/images/winograd-input-visual.png" alt="Visualising an input channel for Winograd" title="A 3D visualisation of the input (other channels not visualised)"></p>
+<p>Following the notation of the Winograd paper by Lavin and Gray, we&rsquo;re computing F(M x M, R * R) where M = 2 (i.e. each input tile computes 2x2 outputs), and R = 3 (3x3 filter). The input tile size is then (M + R - 1)(M + R - 1) = 4x4. Given the overlap between the neighbouring tiles and the underlying dot products we are saving on, we require a stride equal to the complement of the overlap between tiles. Since their overlap is given by R - 1, and the size of the tile in a given dimension is given by M + R - 1, the remainder (and hence the stride) is just M (in this case, 2). An example of a 4x4 input tile is visualised below:</p>
+<p><img src="/images/winograd-input-tiling.png" alt="Visualising the tiling of the input for Winograd" title="A 4x4 input tile from the input, which will undergo an input transform. Note that this is per channel."></p>
+<p>For each tile like the one above, we then perform the input transform. Likewise, the filter undergoes the filter transform (this need only be done once for the filter, mind). The diagonal line below represents the 16 real multiplications that we do in place of the 36 of the naive method. The transformed input is on the left, and the transformed filter at the top:</p>
+<p><img src="/images/winograd-insane-pointwise.png" alt="Visualising the pointwise multiplications for Winograd" title="Visualising Winograd for a single tile, over a single input channel"></p>
+<p>Now let&rsquo;s think for a minute. This tiling is only done over a single channel. Yet for any given filter we need to accumulate the results over multiple input channels for a single output channel. So we can transform tiles at the same position but &lsquo;through&rsquo; the input in all of the input channels, and stack them on top of each other. The output transform then only has to be done once, instead of each time per input channel. This is illustrated below.</p>
+<p><img src="/images/winograd-insane-dot-product.png" alt="Visualising the dot products for Winograd" title="Visualising Winograd for a single tile, over all input channels"></p>
+<p>Now instead of 16 scalar multiplications, we have 16 dot products. This means we can use highly optimised level 1 routines from BLAS (i.e. linear algebra) libraries. But we can group up the computation further. We have multiple filters, and each of these can be computed independently of each other. So if we stack these transformed filters next to each other, we can amortise the cost of calling the filter transform to be done only once, rather than once per output channel. It&rsquo;s a bit tricky, but I hope you can see the staggered vectors that line up with the transformed filter matrices:</p>
+<p><img src="/images/winograd-insane-matvec.png" alt="Visualising the matrix-vector products for Winograd" title="Visualising Winograd for a single tile, over all input and output channels"></p>
+<p>We now have 16 matrix-vector products. This makes use of the level 2 GEMV routine found in BLAS libraries (and now the outputs are vectors, not scalars). Can you see where this is going? We have yet another dimension to add. In neural networks it is common to have &lsquo;batches&rsquo; of images, and this batch-size is typically denoted N as mentioned earlier.</p>
+<p>Each of these inputs are computed independently of each other, so we can stack them on top of each other without changing the validity of the algorithm. This is what Lavin and Gray meant when they said the core routine can be implemented with multiple matrix-multiplies:</p>
+<p><img src="/images/winograd-insane-matmul.png" alt="Visualising the matrix-multiplies for Winograd" title="Visualising Winograd for a single tile, for all images in a batch, and over all input/output channels"></p>
+<p>Finally we have 16 matrix-multiplies and are now using the level 3 GEMM routine, since our batch-size mentioned earlier is (conveniently) 32. We then perform the output transform on these matrices, and the entire algorithm is done for that specific slice of the input.</p>
+<p>However, it&rsquo;s very common that the batch size is much smaller than the number of input/output channels. This makes each of the input matrices very short but wide. This is sub-optimal since BLAS libraries usually perform best on approximately square matrices.</p>
+<p>The way to circumvent this is by computing multiple <strong>tiles</strong> in parallel - after all, these are all computed independently of each other too! So the height of the transformed input block is N*P, where N is the batch size and P denotes the total number of tiles per input channel. In Lavin and Gray&rsquo;s Winograd paper, they chunk it up so that the height of each of the transformed input matrices is always 32, but this is not a requirement. I&rsquo;ve chosen not to show the larger matrices, since things get a bit hard to see properly.</p>
+<p>We then perform the output transform on these (larger) matrices and then Winograd is done for the entire input. Assuming our input channels are all identical and our filters were Gaussian blurs (not realistic, but you get the idea), we get an output like below:</p>
+<p><img src="/images/blurred-output.png" alt="Previous input now blurred due to the Gaussian filter" title="Visualising an input convolved with a 3x3 Gaussian blur filter"></p>
+<h2 id="closing-remarks">Closing remarks</h2>
+<p>If you&rsquo;re still reading this, props to you! This post is definitely not a light read, but I hope you&rsquo;ve gained a bit of insight into the convolution algorithm that features in signal processing and modern deep learning libraries. Winograd was a spectacular success with its debut in 2015 in Lavin and Gray&rsquo;s seminal paper. When they benchmarked their own routine against the latest version of cuDNN on VGG-19, they concluded:</p>
+<blockquote>
+<p>&ldquo;<em>F(2×2,3×3) performs better than cuDNN at every layer [of VGG-19] and batch size, except layer conv1.1 [the first layer], which contributes less than 0.5% of the total network computation.</em>&rdquo;</p>
+</blockquote>
+<p>That is an extremely impressive achievement, and a excellent example of hardware utilisation being totally dominated by algorithmic superiority (admittedly with a very well-optimised implementation of Winograd). You can check the paper for details, but on average Lavin and Gray&rsquo;s highly optimised routine was 3.41x faster than the best that cuDNN could do. Remember, this was on NVIDIA hardware, for VGG-19, with 32-bit floating-point data. NVIDIA rather quickly added a Winograd routine in the aftermath, with many other libraries following suit.</p>
+<p>That&rsquo;s all for now - hope you enjoyed this little misadventure, and check out part 3 for seeing the performance gains of Winograd on a production-grade deep neural network library!</p>
+<hr>
+<h6 id="1-i-am-not-kidding---literally-everyone-uses-winograd-for-3x3s">1. I am not kidding - literally everyone uses Winograd for 3x3s.</h6>
+<h6 id="2-if-you-dont-fully-understand-or-havent-come-across-the-fft-before-dont-worry-about-it-you-can-think-of-it-as-a-bigger-but-better-scaling-sibling-to-winograd-convolutions-i-may-do-a-post-on-the-fft-some-day-but-theres-literally-44200000-results-online-for-it-if-you-google-it">2. If you don&rsquo;t fully understand or haven&rsquo;t come across the FFT before, don&rsquo;t worry about it. You can think of it as a bigger-but-better-scaling sibling to Winograd convolutions. I may do a post on the FFT some day, but there&rsquo;s literally 44,200,000 results online for it if you Google it.</h6>
+<h6 id="3-you-can-just-negate-the-second-argument-for-the-subtraction-to-become-addition-likewise-divisions-can-be-represented-as-multiplying-by-1-over-the-divisor">3. You can just negate the second argument for the subtraction to become addition. Likewise divisions can be represented as multiplying by 1 over the divisor.</h6>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
+    &copy; 2020 Daniel Soutar
+  </a>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
