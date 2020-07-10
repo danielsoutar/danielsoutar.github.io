@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Daniel Soutar</title>
@@ -6,18 +6,27 @@
     <description>Recent content on Daniel Soutar</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Thu, 17 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 12 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://danielsoutar.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Eagle-Eyed: Faster convolutions with Winograd (Part 1)</title>
+      <title>Faster convolutions with Winograd (Part 2)</title>
+      <link>https://danielsoutar.github.io/projects/winograd_2/</link>
+      <pubDate>Sun, 12 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://danielsoutar.github.io/projects/winograd_2/</guid>
+      <description>A charming misadventure where we discover the Winograd convolution algorithm for CNNs.</description>
+    </item>
+    
+    <item>
+      <title>Faster convolutions with Winograd (Part 1)</title>
       <link>https://danielsoutar.github.io/projects/winograd_1/</link>
       <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://danielsoutar.github.io/projects/winograd_1/</guid>
-      <description>With many fields such as deep learning, I like to think that there are &amp;lsquo;definitive pages&amp;rsquo; on the Internet.</description>
+      <description>With fields such as deep learning, I like to think that there are &amp;lsquo;definitive&amp;rsquo; pages on the Internet.</description>
     </item>
     
     <item>
@@ -26,8 +35,7 @@
       <pubDate>Thu, 23 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>https://danielsoutar.github.io/projects/my_first_project/</guid>
-      <description>Hello there.
-So I&amp;rsquo;ve been working a fair bit these last few weeks on a small project of mine.</description>
+      <description>The time when I mucked around with silly Sudoku puzzles and re-discovered side-effects.</description>
     </item>
     
     <item>

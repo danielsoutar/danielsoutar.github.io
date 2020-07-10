@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.47.1" />
+    <meta name="generator" content="Hugo 0.73.0" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -29,27 +29,22 @@
     
 
     <meta property="og:title" content="Five Six Seven Eight: Dancing Links and DLX" />
-<meta property="og:description" content="Hello there.
-So I&rsquo;ve been working a fair bit these last few weeks on a small project of mine." />
+<meta property="og:description" content="The time when I mucked around with silly Sudoku puzzles and re-discovered side-effects." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://danielsoutar.github.io/projects/my_first_project/" /><meta property="article:published_time" content="2018-08-23T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-08-23T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://danielsoutar.github.io/projects/my_first_project/" />
+<meta property="article:published_time" content="2018-08-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-08-23T00:00:00+00:00" />
 <meta itemprop="name" content="Five Six Seven Eight: Dancing Links and DLX">
-<meta itemprop="description" content="Hello there.
-So I&rsquo;ve been working a fair bit these last few weeks on a small project of mine.">
-
-
+<meta itemprop="description" content="The time when I mucked around with silly Sudoku puzzles and re-discovered side-effects.">
 <meta itemprop="datePublished" content="2018-08-23T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-08-23T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1723">
 
 
 
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Five Six Seven Eight: Dancing Links and DLX"/>
-<meta name="twitter:description" content="Hello there.
-So I&rsquo;ve been working a fair bit these last few weeks on a small project of mine."/>
+<meta name="twitter:description" content="The time when I mucked around with silly Sudoku puzzles and re-discovered side-effects."/>
 
   </head>
 
@@ -142,76 +137,40 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
       <time class="f6 mv4 dib tracked" datetime="2018-08-23T00:00:00Z">August 23, 2018</time>
     </header>
 
-    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
-
-<p>Hello there.</p>
-
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Hello there.</p>
 <p>So I&rsquo;ve been working a fair bit these last few weeks on a small project of mine.</p>
-
 <p>I decided to work on a sudoku solver a while ago when I was bored. I didn&rsquo;t just fancy doing any old solver though, oh no. I fancied having a crack at a much tougher nut - I had heard from my classmates a while ago about an intriguing algorithm called DLX, using some hideously complicated data structure, that Donald Knuth had written ages ago.</p>
-
 <p>Naturally, this was too good to ignore, and so I decided to start off with a basic solver (which actually solved killer sudokus), and then try this more efficient algorithm.</p>
-
 <p>At the time of writing I can&rsquo;t say that my implementation is working (although I cannot help but wonder if that is an IO formatting error or not, I&rsquo;ll get back to you on that), although I have learned rather a lot about the algorithm. It is remarkably simple, but its data structure is categorically not. In fact, it&rsquo;s probably the most intricate data structure I&rsquo;ve used so far, and undoubtedly the most fiddly.</p>
-
 <p>DLX at its heart is simply another general-purpose brute-force search algorithm. In other words, given a problem, it systematically evaluates across all valid paths in the search space to find a solution(s). The difference is that DLX is a clever implementation of this basic idea. It models the problem as a <a href="https://en.wikipedia.org/wiki/Logical_matrix">binary matrix</a>, where the rows represent options and the columns represent the constraints that the solution must satisfy. 1s fill the spaces where a given option satisfies a given constraint. Clearly, an option might satisfy multiple constraints. The challenge is then to find any or all sets of options such that each constraint is satisfied, and satisfied exactly once. This is known as an <a href="https://en.wikipedia.org/wiki/Exact_cover">Exact Cover problem</a>.</p>
-
 <p>As it turns out, Su Doku (meaning &lsquo;number place&rsquo; in Japanese) can also be represented as an exact cover problem. The options are the permutations of row-column-value triples (for a 9x9 grid, this means 9<sup>3</sup>, or 729 rows). The constraints are the requirements that each row, column, nonet (the technical term for the mini-grids) have exactly 1 instance of each of the N values, where N is the size of the grid. These conditions are sufficient on their own, although you can also add the constraint that each cell has exactly one number. This is merely to aid the solver and make things a little faster.</p>
-
 <p>So why not just use a big array? Well in this case the binary matrix is sparse, which is just a fancy way of saying it has a lot of 0s and relatively little else. This, as it turns out, is quite wasteful memory-wise. One way to more efficiently store a sparse matrix is to use a 2D quadruply linked list (yes, really). Each of the nodes will represent a 1 in the matrix, and accessing the next 1 is simply a matter of traversing to the next node in the appropriate direction.</p>
-
 <p>Alright Dan, you might say, fair enough. But how does one go about actually modifying this (really) massive data structure without segfaulting immediately?</p>
-
 <p>&hellip; I technically can&rsquo;t exactly say how, not yet anyway. But Donald Knuth made a neat little observation about linked lists that relates to the above data structure. Roughly, that given a doubly-linked list and a given node, one can give the appearance, from the list&rsquo;s perspective, that the node is removed, and using only that node, then be able to put it back in again. Strictly speaking, the node&rsquo;s own connections to its associates are still intact, which is why placing it back in again is possible. Donald Knuth claims that to visualise the links moving around is akin to a dance, hence &lsquo;Dancing Links&rsquo;</p>
-
 <p>This single observation is quaint, but combined with this mammoth data structure the benefit is significant: we can efficiently update the structure by &lsquo;covering&rsquo; options and constraints to represent our selecting them. The beauty is that since so much of our time is spent back-tracking, <em>undoing</em> our selections using Dancing Links is extremely efficient!</p>
-
 <p>I won&rsquo;t re-elaborate on <a href="https://arxiv.org/pdf/cs/0011047.pdf">Donald Knuth&rsquo;s DLX algorithm</a> (click the link if you&rsquo;re interested), since he does that pretty well anyway and has some nice diagrams to gawk at. But suffice to say that it is a pretty impressive effort. The actual search algorithm is almost laughably simple. The main challenge is ensuring the data structure is set up correctly. As anyone who has tried to implement it as-is will tell you, this is not a trivial task. To translate between a given sudoku puzzle and this 2D doubly-linked list (which wraps around toroidally, so the rows and columns are cyclic) also requires considerable care.</p>
-
 <p>I can&rsquo;t say I&rsquo;m a massive fan of the data structure used, but I love the ingenuity of the algorithm. Apparently it&rsquo;s also blazingly fast, and would be since we swap out the constraints for every option we try. Of course, other algorithms for sudoku may well be faster, but this is because they exploit domain-specific knowledge. The beauty of DLX is that it also works on any problem where the most plausible approach is back-tracking. It also scales well, since one can use a heuristic to minimise the amount of branching by choosing the column with the fewest valid options available (imagine a cell with only one possible value in sudoku, for example).</p>
-
 <p>The code for <a href="https://github.com/danielsoutar/bouncing-chains">this is on Github</a>, if you care to look - I wrote the basic solver in C (and I personally rate it as very readable C myself), and the full-fat DLX implementation is (currently) in Python.</p>
-
 <p>I do hope to finish this soon - being able to visualise the search process with matplotlib sounds like fun. The best part? Apparently DLX can be parallelised&hellip; assuming I get that far. Watch this space!</p>
-
-<h2 id="edit-it-worked-all-along">EDIT - It worked all along!</h2>
-
+<h2 id="edit---it-worked-all-along">EDIT - It worked all along!</h2>
 <p>How funny! So it turns out the algorithm as I implemented it was in fact always correct the whole time. I had undergone severe testing to pin down the (illusionary) bug, having hypothesised:</p>
-
 <ul>
 <li>It was an issue of broken links, that somewhere the links were not being updated correctly and that the structure was corrupted</li>
 <li>Updates were not persistent after completion of the function in which said updates were done</li>
 <li>Translating between the structure and sudoku puzzles was malformed in some way</li>
 </ul>
-
 <p>It gradually became clear that none of these were the issue, which I confess really befuzzled me. That is, until I realised that the algorithm was in fact reaching the correct answer at some point!</p>
-
 <p>The reason why I had gotten it incorrect was because I had misunderstood the <strong>output</strong> of the algorithm, or rather, what it <strong>didn&rsquo;t</strong> output. If one carefully reads Knuth&rsquo;s pseudo-code for <code>search()</code>, on the first line:</p>
-
 <pre><code>If R[h] = h, print the current solution (see below) and return.
-</code></pre>
-
-<p>In other words, <code>search()</code> <strong>emits</strong> the solutions to the problem - it does not return them! What I mean by that is that the algorithm produces the solutions as <strong>side-effects</strong>, or at least does so in the way Knuth formulated it. <strong>Printing</strong> the solution in this way should have rang alarm bells in my head that the final result of the call to <code>search()</code> was not actually going to be the solution! The one thing that Knuth (somewhat confusingly) does not explicitly clarify is that the line:</p>
-
+</code></pre><p>In other words, <code>search()</code> <strong>emits</strong> the solutions to the problem - it does not return them! What I mean by that is that the algorithm produces the solutions as <strong>side-effects</strong>, or at least does so in the way Knuth formulated it. <strong>Printing</strong> the solution in this way should have rang alarm bells in my head that the final result of the call to <code>search()</code> was not actually going to be the solution! The one thing that Knuth (somewhat confusingly) does not explicitly clarify is that the line:</p>
 <pre><code>set r ← O[k] and c ← C[r];  // Following call to search(k+1)
-</code></pre>
-
-<p>is meant to represent restoring the value of <code>r</code>. In fact setting <code>r</code> doesn&rsquo;t make sense (assuming <code>r</code> is a local variable) since we restored the structure in the call <code>search(k+1)</code>, and we are not out of scope, so we don&rsquo;t need to modify <code>r</code> at all in this line. Likewise, setting <code>r</code> in most languages does not imply that the value (in this case, <code>O[k]</code>) is discarded appropriately! Additionally, if one wished to print out the solver&rsquo;s progress, the above line wouldn&rsquo;t work! The the desired operation would be either:</p>
-
+</code></pre><p>is meant to represent restoring the value of <code>r</code>. In fact setting <code>r</code> doesn&rsquo;t make sense (assuming <code>r</code> is a local variable) since we restored the structure in the call <code>search(k+1)</code>, and we are not out of scope, so we don&rsquo;t need to modify <code>r</code> at all in this line. Likewise, setting <code>r</code> in most languages does not imply that the value (in this case, <code>O[k]</code>) is discarded appropriately! Additionally, if one wished to print out the solver&rsquo;s progress, the above line wouldn&rsquo;t work! The the desired operation would be either:</p>
 <pre><code>set O[k] ← NULL and c ← C[r];
-</code></pre>
-
-<p>as some others have done, or:</p>
-
+</code></pre><p>as some others have done, or:</p>
 <pre><code>pop O[k] and c ← C[r];
-</code></pre>
-
-<p>if using a list-style structure to represent <code>O</code>. By doing this, one can record or display the discovered solution(s) accordingly.</p>
-
+</code></pre><p>if using a list-style structure to represent <code>O</code>. By doing this, one can record or display the discovered solution(s) accordingly.</p>
 <p>This algorithm and (needlessly) debugging it has taught a good lesson - when implementing anything, know what you are implementing! In my case, I had (wrongly) assumed the algorithm returned the solution, whereas the reality was that it was emitted as a side-effect. I could argue that side-effects should be avoided, talk until blue in the face about the merits of pure functions; the point of understanding the nature of the algorithm still stands. I&rsquo;m glad I&rsquo;ve learned that lesson - and hopefully it saves me considerable time in the future!</p>
-
 <p>Code for my implementations will be up on my Github (link above), and other content beyond the base implementation in future posts (if that happens). I am indebted to the following as exceedingly useful sources, and if you&rsquo;re wanting to give DLX a try yourself they are definitely worth checking out. In no particular order:</p>
-
 <ul>
 <li><a href="https://arxiv.org/pdf/cs/0011047.pdf">Knuth&rsquo;s original paper</a>: Clearly the bedrock of this project, and definitely very well-written. The point about updating <code>O</code> is my only gripe - otherwise a tremendous paper (enjoyably readable) and very thorough.</li>
 <li>I took a good, long look at some other people&rsquo;s implementations when I was debugging the Python implementation - each of which has its merits. I&rsquo;m particularly fond of farhiongit&rsquo;s incredibly detailed documentation (even if it is a little excessive occasionally and variable names don&rsquo;t need to be an entire sentence, but better this than the converse), and blynn&rsquo;s ingenious use of scoping and function calls in his <code>dlx_solve()</code>. I might even elaborate on the latter in a blog post for just how lovely a trick it is. Their links are <a href="https://github.com/blynn/dlx">here</a>, <a href="https://github.com/rafalio/dancing-links-java">here</a>, and <a href="https://github.com/farhiongit/dancing-links">here</a>.</li>
@@ -240,7 +199,7 @@ So I&rsquo;ve been working a fair bit these last few weeks on a small project of
     <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
-    &copy; 2019 Daniel Soutar
+    &copy; 2020 Daniel Soutar
   </a>
   </div>
 </footer>

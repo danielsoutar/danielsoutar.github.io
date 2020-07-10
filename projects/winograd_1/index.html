@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>Daniel Soutar  | Eagle-Eyed: Faster convolutions with Winograd (Part 1)</title>
+    <title>Daniel Soutar  | Faster convolutions with Winograd (Part 1)</title>
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.47.1" />
+    <meta name="generator" content="Hugo 0.73.0" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -28,25 +28,23 @@
 
     
 
-    <meta property="og:title" content="Eagle-Eyed: Faster convolutions with Winograd (Part 1)" />
-<meta property="og:description" content="With many fields such as deep learning, I like to think that there are &lsquo;definitive pages&rsquo; on the Internet." />
+    <meta property="og:title" content="Faster convolutions with Winograd (Part 1)" />
+<meta property="og:description" content="With fields such as deep learning, I like to think that there are &lsquo;definitive&rsquo; pages on the Internet." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://danielsoutar.github.io/projects/winograd_1/" /><meta property="article:published_time" content="2019-10-17T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-10-17T00:00:00&#43;00:00"/>
-<meta itemprop="name" content="Eagle-Eyed: Faster convolutions with Winograd (Part 1)">
-<meta itemprop="description" content="With many fields such as deep learning, I like to think that there are &lsquo;definitive pages&rsquo; on the Internet.">
-
-
+<meta property="og:url" content="https://danielsoutar.github.io/projects/winograd_1/" />
+<meta property="article:published_time" content="2019-10-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-10-17T00:00:00+00:00" />
+<meta itemprop="name" content="Faster convolutions with Winograd (Part 1)">
+<meta itemprop="description" content="With fields such as deep learning, I like to think that there are &lsquo;definitive&rsquo; pages on the Internet.">
 <meta itemprop="datePublished" content="2019-10-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-10-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2707">
+<meta itemprop="wordCount" content="2716">
 
 
 
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Eagle-Eyed: Faster convolutions with Winograd (Part 1)"/>
-<meta name="twitter:description" content="With many fields such as deep learning, I like to think that there are &lsquo;definitive pages&rsquo; on the Internet."/>
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Faster convolutions with Winograd (Part 1)"/>
+<meta name="twitter:description" content="With fields such as deep learning, I like to think that there are &lsquo;definitive&rsquo; pages on the Internet."/>
 
   </head>
 
@@ -134,159 +132,93 @@
           
         PROJECTS
       </p>
-      <h1 class="f1 athelas mb1">Eagle-Eyed: Faster convolutions with Winograd (Part 1)</h1>
+      <h1 class="f1 athelas mb1">Faster convolutions with Winograd (Part 1)</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-10-17T00:00:00Z">October 17, 2019</time>
     </header>
 
-    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
-
-<p>With many fields such as deep learning, I like to think that there are &lsquo;definitive pages&rsquo; on the Internet.</p>
-
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>With many fields such as deep learning, I like to think that there are &lsquo;definitive pages&rsquo; on the Internet.</p>
 <p>These pages are annoyingly high-quality, with a level of quality and attention to detail that borders on the psychopathic. These pages can occasionally use a JS library just for the footer<sup>1</sup>. They are the definitive reference for the specific topic in question, and collectively form a phenomenal bedrock of knowledge. If you find one, you treasure it and guard it with your life.</p>
-
 <p>For depthwise-separable convolutions, this page is <a href="https://eli.thegreenplace.net/2018/depthwise-separable-convolutions-for-machine-learning/">Eli Bendersky&rsquo;s seminal article</a>. For interpreting neural networks as things that manipulate a manifold, <a href="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/">Christopher Colah</a> made a pretty swell effort. For understanding branch prediction in computer hardware, <a href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array/11227902#11227902">the most up-voted post on Stack Overflow as of writing is an amazing reference</a>. It is surprising then, that no &lsquo;definitive&rsquo; article exists for the key algorithm used for convolutions in every convolutional neural network library out there (although <a href="https://www.intel.ai/winograd-2/">Intel&rsquo;s article gets close</a>). That algorithm is the Winograd convolution algorithm. And I am going to give it my best shot for this to be its definitive article.</p>
-
 <p>I think this topic warrants a three-part series to give it full justice, and really crack it open. For the first part (the rest of this post), I&rsquo;ll give a quick refresh of convolutions and how we can represent them as matrix multiplies before skimming over im2col as an illustration of this approach. The second &lsquo;episode&rsquo; will introduce Winograd and its theoretical advantages over im2col, along with some (more) pretty pictures. The last part graphs the real performance gains.</p>
-
 <p>I should note: if you&rsquo;re not familiar at all with convolutions, I suggest you familiarise yourself with the basic idea to really get the most out of this series. Personally, I recommend the following:</p>
-
 <ul>
 <li><a href="https://www.youtube.com/watch?v=jajksuQW4mc">Udacity&rsquo;s rapid introduction to CNNs (3 mins)</a></li>
 <li><a href="https://www.youtube.com/watch?v=FmpDIaiMIeA">A deeper dive into CNNs (26 mins)</a></li>
 <li><a href="https://ujjwalkarn.me/2016/08/11/intuitive-explanation-convnets/">A standard but well-referenced blog post (20+ mins)</a></li>
+<li><a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">3Blue1Brown&rsquo;s phenomenal intro to linear algebra (168 mins total)</a></li>
 </ul>
-
 <p>There are many more resources out there, but the gist of convolutions with input and output channels/feature-maps should be enough for reading on - that and understanding what a dot product is. With all that said, I&rsquo;ll try my best to keep things approachable.</p>
-
 <h2 id="some-context-and-history">Some context and history</h2>
-
 <blockquote>
 <p>&ldquo;I would spend 55 minutes defining the problem and then five minutes solving it.&rdquo;</p>
-
+</blockquote>
+<blockquote>
 <p>&ndash; <strong>Anonymous</strong></p>
 </blockquote>
-
 <p>Neural networks have been around since the 60s, although research didn&rsquo;t take off due to various perceived limitations and the inability to train massive networks on then-contemporary hardware. Computer vision as a field was pretty much born around the same time, although there was little to no overlap with neural networks. Amusingly, an intern at MIT was famously asked in 1966 to wire up a computer to a camera and have it &lsquo;describe what it saw&rsquo;, thus essentially solving &ldquo;the computer vision problem&rdquo;. To date, that is <strong>still</strong> an open problem.</p>
-
-<p><img src="/images/mit-project.png" alt="MIT summer project for Gerald Sussman, tasked with solving the computer vision problem" title="Gerald Sussman's impossible summer project" /></p>
-
+<p><img src="/images/mit-project.png" alt="MIT summer project for Gerald Sussman, tasked with solving the computer vision problem" title="Gerald Sussman's impossible summer project"></p>
 <blockquote>
 <p><em>The next time your supervisor says your project is manageable, make them prove it!</em></p>
 </blockquote>
-
 <p>Although Kunihiko Fukushima first constructed a convolutional neural network (convnet) as early as 1980(!), convnets had their first watershed moment in 1998 at NYU with Yann LeCun. This marked the first time that a convolutional neural network enjoyed large-scale success in a non-trivial setting, by classifying numbers from the MNIST dataset. This dataset comprises of around 10,000 images of hand-written digits. It took quite some time before convnets really spread any further after this though, chiefly due to the lack of large-scale high-quality datasets. Sufficiently powerful hardware necessary to train the models required for these datasets was also not yet available.</p>
-
 <p>This changed in 2012, with Geoffrey Hinton and his students Alex Krizhevsky and Ilya Sutskever creating a network named AlexNet.</p>
-
-<p><img src="/images/alexnet.png" alt="Architectural diagram of AlexNet" title="Architectural diagram of AlexNet, winner of the ILSVRC 2012 challenge" /></p>
-
+<p><img src="/images/alexnet.png" alt="Architectural diagram of AlexNet" title="Architectural diagram of AlexNet, winner of the ILSVRC 2012 challenge"></p>
 <p>At this point, the ImageNet dataset comprising over a million images was available as part of the ImageNet Large Scale Visual Recognition Challenge (ILSVRC). Additionally, there was sufficiently powerful, parallel hardware in the form of two NVIDIA GTX580 3GB GPUs.</p>
-
-<p><img src="/images/nvidia-580-3gb-small.jpg" alt="A NVIDIA GTX 580 3GB Graphics Card" title="A NVIDIA GTX 580 3GB Graphics Card" /></p>
-
+<p><img src="/images/nvidia-580-3gb-small.jpg" alt="A NVIDIA GTX 580 3GB Graphics Card" title="A NVIDIA GTX 580 3GB Graphics Card"></p>
 <p>The model, named AlexNet in the aftermath, bagged a top-5 test-set error of just 17%, with various techniques forming the basis for many modern networks. For reference, that year&rsquo;s runner-up had an 11% higher error. The success of this network cannot be over-stated; it pretty much single-handedly demonstrated that the future of computer vision was in these neural networks. Every ILSVRC winner since AlexNet has been a convnet. Currently the error rates are virtually identical with those of human participants.</p>
-
 <h2 id="why-we-care-about-3x3s">Why we care about 3x3s</h2>
-
 <p>One of the main problems with AlexNet was that it used various filter sizes which are severely detrimental to performance. The very first layer used an 11x11 filter<sup>2</sup>, which is enormous by current standards. Since the filter&rsquo;s parameter count over a single input channel is a function of area, the number of parameters increases quadratically, assuming a square filter. This means 121 parameters for the 11x11 filter, as opposed to just 9 in the case of a 3x3. That means that many more operations to perform with all these parameters, so the number of computations also increases quadratically.</p>
-
-<p><img src="/images/filter_size_area.png" alt="Diagram of area as a function of (square) filter size" title="Diagram of area as a function of filter size" /></p>
-
+<p><img src="/images/filter_size_area.png" alt="Diagram of area as a function of (square) filter size" title="Diagram of area as a function of filter size"></p>
 <p>One very important thing to note - these filter sizes are in the <em>spatial</em> dimension - their <em>depth</em> is the same as the input depth. For an RGB image, you have 3 colour channels, so its &lsquo;depth&rsquo; is 3. A &lsquo;3x3 filter&rsquo; in that case would really be a &lsquo;3x3x3 filter&rsquo;. Saying &lsquo;3x3&rsquo; is just a common shorthand.</p>
-
 <p>The 3x3 size is really important, because it was (and still is) frequently used in image processing techniques well before convnets. One of the reasons for this, and why this size is so often used in neural networks today, is because the filter is small. This means the overall amount of computation required is also relatively small and scales well to larger images. Even a 5x5 filter constitutes a near-3x increase in the amount of calculations and parameter count.</p>
-
 <p>The other reason, and why neural networks generally use filters with odd sizes, is because it is the smallest size which allows a filter to be centred around the current pixel in the input image. This is very important! You will always have a blurring of some kind in the output without this property, bar a few unrealistic examples.</p>
-
 <p>A 1x1 filter is technically smaller than a 3x3 and centres around each pixel, but does not incorporate local spatial information. Although 1x1s are used often as well in convolutional neural networks, this is more to do with incorporating information across the depth dimension than it is across spatial dimensions. Remember that &lsquo;1x1&rsquo; is a shorthand - the depth is assumed to be relatively large for a 1x1 filter, due to the lack of spatial structure.</p>
-
 <h2 id="from-images-to-matrices">From images to matrices</h2>
-
 <p>With that semi-brief refresher aside, let&rsquo;s build a bit of intuition. A neural network can be interpreted as performing a highly non-linear transformation of points in the input space. In neural networks, the way we do this is by first performing a linear transformation of the space (which can be expressed with a matrix multiply), followed by an element-wise non-linearity to the resulting output. Linear transform in space + element-wise non-linear function = non-linear transform!</p>
-
 <p>In an image classification problem, points in space correspond to specific images. A 28x28 grayscale image for instance can be represented as a vector of 28 * 28 = 784 numbers, if you just unroll the entire image into a long list. I&rsquo;ve personally found a great way to visualise 784-dimensional things as points in space:</p>
-
 <ol>
 <li>Take a point represented as a vector in 2D space like the one below.</li>
 </ol>
-
-<p><img src="/images/real-784-dimensional-arrow.png" alt="A 2D vector treated as a point in space" title="A 784D vector, promise" /></p>
-
+<p><img src="/images/real-784-dimensional-arrow.png" alt="A 2D vector treated as a point in space" title="A 784D vector, promise"></p>
 <ol start="2">
-  <li>Say to everyone in the room as loudly as possible that this 2D thing is actually 784-dimensional. It's best if you make this a team effort.</li>
+<li>Say to everyone in the room as loudly as possible that this 2D thing is actually 784-dimensional. It&rsquo;s best if you make this a team effort.</li>
 </ol>
-
 <p>These points are then transformed in some fashion with learned parameters until the neural network is able to draw a line (or more generally, for N dimensions, a (N-1)-dimensional plane) between the different classes, such as the 3D example with a 2D plane below:</p>
-
-<p><img src="/images/linearly-separable.png" alt="Linearly separating two distinct classes with a 2D plane" title="Linearly separating two classes with a 2D plane" /></p>
-
+<p><img src="/images/linearly-separable.png" alt="Linearly separating two distinct classes with a 2D plane" title="Linearly separating two classes with a 2D plane"></p>
 <p>This allows the network to predict whether a new point belongs to a given class, with an associated probability. It&rsquo;s important to note that this is general - any neural network classifier can be thought of in this way, not just convnets.</p>
-
 <p>But wait, I hear someone ask. We&rsquo;re trying to talk about convolutions, not transforms. Why bring this up at all?</p>
-
 <p>Convolutions <strong>are</strong> transforms! The reason we use them on image-like data instead of a classical fully-connected layer is because they are drastically more parameter-efficient for data with spatial structure, but convolutions are also transforms in the same way fully-connected layers are. The visual idea of &lsquo;sliding filters&rsquo; is equivalent to this mathematical idea of transforming points in space.</p>
-
 <p>This should make sense, since the filter and input will produce a new feature-map with different numeric values (bar the identity transform). Different numeric values in the same space, ergo a different set of coordinates - the input has been &lsquo;moved&rsquo;. It should then seem reasonable that we can define a (discrete) convolution, which is often written like this:</p>
-
-<p><img src="/images/convolution-equation.svg" height="70" width="12"/></p>
-
+<img src="/images/convolution-equation.svg" height="70" width="12"/>
 <p>as a matrix multiply, which looks like this:</p>
-
-<p><img src="/images/matrix-multiply-equation.svg" height="70" width="12"/></p>
-
+<img src="/images/matrix-multiply-equation.svg" height="70" width="12"/>
 <p>One small caveat, which is an annoying quirk<sup>3</sup> of the deep learning community: despite its repeated reference to the operation as a convolution, technically in our case we are computing the cross-correlation. Both are near-identical in the forward pass (you basically just replace the subtractions for the indices above with additions), except convolutions assume the filter is symmetric, so in cross-correlation you need to flip the filter when taking the derivative with respect to the filter weights. I&rsquo;ll continue to refer to the operation as a convolution, but keep this in mind if you get confused elsewhere.</p>
-
 <p>The Toeplitz matrix is the general form of a convolution, although you don&rsquo;t see this specific transform used in practice, so don&rsquo;t worry about this. The reason for its lack of use is because there&rsquo;s a fair amount of 0s, which means a lot of wasted memory if you try to compute convolutions with a Toeplitz representation. For bigger filters especially, this would be a nightmare. But for smaller kernels, you&rsquo;d be better off just doing the naive approach and computing the results directly. Let&rsquo;s visualise how the naive approach would work:</p>
-
-<p><img src="/images/sliding-window.gif" alt="Animation of convolution (sliding window)" title="A 3x3x3 filter with stride 1 convolving a 4x4x3 input" /></p>
-
+<p><img src="/images/sliding-window.gif" alt="Animation of convolution (sliding window)" title="A 3x3x3 filter with stride 1 convolving a 4x4x3 input"></p>
 <p>Here we&rsquo;re sliding a &lsquo;3D window&rsquo; across a 3D input with a stride of 1 (in both the height and width of the input) and the filter being a &lsquo;3x3&rsquo;. We&rsquo;re not &lsquo;going off the edges&rsquo; with our filter, but rather only the sections where the filter can fit completely in the image (this is called &lsquo;valid&rsquo; padding). Each output element is computed by performing the dot product for the current slice of the input with the filter. Letting the vectors <strong>x</strong> and <strong>f</strong> denote the (unrolled) 3x3x3 (27-element) slices of the input and the filter respectively, their dot product can be written as:</p>
-
-<p><img src="/images/dot-product.svg" height="70" width="12"/></p>
-
+<img src="/images/dot-product.svg" height="70" width="12"/>
 <p>Now imagine we have a bunch of these dot products to do (4 in the example above due to valid padding). We know that the filter is the same in each dot product, because we are scanning the entire image for the presence of a specific feature. That sounds a lot like a matrix-vector product. If we have multiple filters (for detecting multiple features) like in the more general example below:</p>
-
-<p><img src="/images/FCHW-convolve.gif" alt="Animation of convolution with multiple filters" title="A 3x3x3x3 filter tensor with stride 1 convolving a 4x4x3 input" /></p>
-
+<p><img src="/images/FCHW-convolve.gif" alt="Animation of convolution with multiple filters" title="A 3x3x3x3 filter tensor with stride 1 convolving a 4x4x3 input"></p>
 <p>We can stack the independent filters on top of each other to make a &lsquo;feature matrix&rsquo; - which makes a matrix multiply! We <strong>really</strong> want to use matrix multiplies, because there are a plethora of highly optimised Basic Linear Algebra Subroutine (BLAS) libraries for computing matrix multiplies, due to their ubiquity in <a href="https://petewarden.com/2015/04/20/why-gemm-is-at-the-heart-of-deep-learning/">scientific calculations</a>. But we don&rsquo;t want the inefficiency of all of those 0s in a Toeplitz matrix representation. What we want is to somehow get the best of both worlds.</p>
-
 <p>Well there is an answer that makes a step in the right direction, and that&rsquo;s to rearrange the data into a format better-suited for a dense matrix multiply. This is called the <em>im2col</em> transform. Although it&rsquo;s not easy to find, <em>im2col</em> was originally used in 2006 by Microsoft researchers when speeding up convnets for document processing<sup>4</sup>. In any case, it is explained reasonably well by Stanford&rsquo;s CS231n online notes <a href="http://cs231n.github.io/convolutional-networks/">here</a>. But they don&rsquo;t diagram it - so let&rsquo;s see it for ourselves for multiple filters.</p>
-
-<p><img src="/images/FCHW-im2col-unfurl.gif" alt="Animation of unfurling the filters and input" title="The 3x3 filters are unfurled along with each slice of the 4x4 input" /></p>
-
+<p><img src="/images/FCHW-im2col-unfurl.gif" alt="Animation of unfurling the filters and input" title="The 3x3 filters are unfurled along with each slice of the 4x4 input"></p>
 <p>That&rsquo;s the transform itself. It&rsquo;s then just a matter of stacking these separate slices of the input on top of each other. The reason this is valid is because each dot product is independent from the others. By stacking these filters and input slices together, we have something like this:</p>
-
-<p><img src="/images/FCHW-im2col-matmul.gif" alt="Animation of applying im2col" title="These slices are just stacked on top of each other, and you have a mat-mul!" /></p>
-
+<p><img src="/images/FCHW-im2col-matmul.gif" alt="Animation of applying im2col" title="These slices are just stacked on top of each other, and you have a mat-mul!"></p>
 <p>Given that we&rsquo;ve mentally unfurled the slices of the input and the corresponding filter into vectors to do the dot product, this should seem pretty natural. <em>im2col</em> is just a fancy name for this rearrangement, and just stacking these unfurled vectors on top of each other. Then you have a single matrix multiply - without any redundant 0s! At the end, you rearrange the result back into the shape it would have taken. In the case above, the output would have been a 2x2, with 3 output channels, one per filter.</p>
-
 <p>An interesting thing to note is that for 1x1 convolutions, no such transform is necessary<sup>5</sup> - you can directly call a matrix multiply, since there&rsquo;s nothing to unfurl as such. This makes 1x1 convolutions very efficient, which is one of the reasons why you&rsquo;ll see them a fair amount in modern networks. In truth, in around 2014 (which is roughly when those notes from Stanford were available, although it has been updated a bit since), <em>im2col</em> was a good algorithm and was implemented in several libraries such as Caffe.</p>
-
 <h2 id="the-achilles-heel-of-im2col">The Achilles heel of <em>im2col</em></h2>
-
 <p>The problem is, as that CS231n page mentions, <em>im2col</em> has a tendency to duplicate memory. Since we need to unfurl each slice of the input, any situation where the stride is less than the filter size leads to a degree of overlap, as illustrated below:</p>
-
-<p><img src="/images/3x3-conv-overlap.png" alt="Visualising the overlap in dot products" title="Hotter regions correspond to greater levels of overlap" /></p>
-
+<p><img src="/images/3x3-conv-overlap.png" alt="Visualising the overlap in dot products" title="Hotter regions correspond to greater levels of overlap"></p>
 <p>In the above case, we have 4 3x3x3 slices, meaning 4 * 27 = 108 elements in our unfurled input matrix, from an input of size 4 * 4 * 3 = 48 elements. Note that the number of filters does not affect this number.</p>
-
 <p>The issue is less to do with the filter size - the real problem is the degree of overlap between the slices of the input. The more overlap, the more duplication you get. The example above is not so bad, but think about what would happen if that image were to grow larger in height and width. The &lsquo;hot&rsquo; block in the centre would scale the fastest, quadratically if the input is square. The &lsquo;medium&rsquo; yellow blocks would grow linearly with the height and the width. And the duplication-free edges don&rsquo;t change at all. So this duplication scales badly as well.</p>
-
 <p>Combine that issue with very deep inputs, and this can become a very memory-hungry implementation. For larger batch sizes, the issue compounds yet again, and can make big layers prohibitively expensive in terms of memory usage. It&rsquo;s this memory usage that I hinted at when I said <em>im2col</em> is only a step in the right direction. If you use too much memory to fit the input and filter in RAM or caches, you&rsquo;d have to dump them to larger-but-slower memory, which can really punish performance.</p>
-
 <p>I should point out that <em>im2col</em> is still very fast and can be a really good choice for certain sizes of inputs. There is a reason why it&rsquo;s still used. But for our 3x3 convolutions, there is a better way. And that way is Winograd. Check out part 2 if you&rsquo;re interested.</p>
-
-<hr />
-
+<hr>
 <h6 id="1-i-do-not-give-me-raw-markdown-any-day">1. I do not. Give me raw markdown any day.</h6>
-
-<h6 id="2-note-that-filters-are-measured-in-pixels-i-e-11x11-denotes-a-grid-of-11-by-11-pixels">2. Note that filters are measured in pixels (i.e. 11x11 denotes a grid of 11 by 11 pixels)</h6>
-
-<h6 id="3-i-know-i-know-it-s-weird-try-not-to-over-think-it">3. I know, I know, it&rsquo;s weird. Try not to over-think it.</h6>
-
-<h6 id="4-caffe-researchers-wrongly-claim-they-were-the-first-to-use-it-they-weren-t-either-at-inventing-im2col-or-using-it-for-convnets-at-best-they-popularised-the-technique-among-modern-libraries-if-you-see-them-quoting-a-caffe-trick-that-s-im2col">4. Caffe researchers <strong>WRONGLY</strong> claim they were the first to use it - they weren&rsquo;t, either at inventing im2col or using it for convnets. At best, they popularised the technique among modern libraries. If you see them quoting a &lsquo;Caffe trick&rsquo;, that&rsquo;s <em>im2col</em>.</h6>
-
+<h6 id="2-note-that-filters-are-measured-in-pixels-ie-11x11-denotes-a-grid-of-11-by-11-pixels">2. Note that filters are measured in pixels (i.e. 11x11 denotes a grid of 11 by 11 pixels)</h6>
+<h6 id="3-i-know-i-know-its-weird-try-not-to-over-think-it">3. I know, I know, it&rsquo;s weird. Try not to over-think it.</h6>
+<h6 id="4-caffe-researchers-wrongly-claim-they-were-the-first-to-use-it---they-werent-either-at-inventing-im2col-or-using-it-for-convnets-at-best-they-popularised-the-technique-among-modern-libraries-if-you-see-them-quoting-a-caffe-trick-thats-im2col">4. Caffe researchers <strong>WRONGLY</strong> claim they were the first to use it - they weren&rsquo;t, either at inventing im2col or using it for convnets. At best, they popularised the technique among modern libraries. If you see them quoting a &lsquo;Caffe trick&rsquo;, that&rsquo;s <em>im2col</em>.</h6>
 <h6 id="5-technically-that-would-depend-on-how-the-data-is-physically-laid-out-in-memory-but-this-is-usually-the-case">5. <strong>Technically</strong> that would depend on how the data is physically laid out in memory, but this is usually the case.</h6>
 <ul class="pa0">
   
@@ -309,7 +241,7 @@
     <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
-    &copy; 2019 Daniel Soutar
+    &copy; 2020 Daniel Soutar
   </a>
   </div>
 </footer>
