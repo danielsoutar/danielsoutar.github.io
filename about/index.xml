@@ -5,10 +5,6 @@
     <link>https://danielsoutar.github.io/about/</link>
     <description>Recent content in About on Daniel Soutar</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-uk</language>
-    
-	<atom:link href="https://danielsoutar.github.io/about/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-uk</language><atom:link href="https://danielsoutar.github.io/about/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

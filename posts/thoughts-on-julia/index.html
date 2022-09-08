@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>DRAFTThoughts on Julia: An Engineer&#39;s Perspective | Daniel Soutar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Intro (~231 words) Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while.">
+    <meta name="generator" content="Hugo 0.102.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="DRAFTThoughts on Julia: An Engineer&#39;s Perspective" />
+<meta property="og:description" content="Intro (~231 words) Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://danielsoutar.github.io/posts/thoughts-on-julia/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-05T00:00:00+00:00" />
+
+<meta itemprop="name" content="DRAFTThoughts on Julia: An Engineer&#39;s Perspective">
+<meta itemprop="description" content="Intro (~231 words) Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while."><meta itemprop="datePublished" content="2022-09-05T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-09-05T00:00:00+00:00" />
+<meta itemprop="wordCount" content="4547">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DRAFTThoughts on Julia: An Engineer&#39;s Perspective"/>
+<meta name="twitter:description" content="Intro (~231 words) Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Daniel Soutar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/projects/" title="Projects page">
+              Projects
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://danielsoutar.github.io/posts/thoughts-on-julia/&amp;title=DRAFTThoughts%20on%20Julia:%20An%20Engineer%27s%20Perspective" class="ananke-social-link linkedin no-underline" aria-label="share on LinkedIn">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">DRAFTThoughts on Julia: An Engineer&#39;s Perspective</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-09-05T00:00:00Z">September 5, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="intro-231-words">Intro (~231 words)</h2>
+<p><em>Disclaimer: These views are my own and do not necessarily reflect the views of my employer.</em></p>
+<p>I&rsquo;ve been ruminating on whether or not to write something like this for a while. Unfortunately for Julia, there has been an extensive set of pretty damning articles over the years from multiple developers critical of the language and wider ecosystem and community. I attach just a few representative links here for reference:</p>
+<ul>
+<li><a href="https://danluu.com/julialang/">Dan Luu on bugs</a></li>
+<li><a href="https://yuri.is/not-julia/">Yuri Vishnevsky, on yet more bugs</a></li>
+<li><a href="https://viralinstruction.com/posts/badjulia/">Jakob Nissen on more language-specific issues</a></li>
+</ul>
+<p>I don&rsquo;t want to comment either way on these articles or the response from the community. Each of those individuals on a bad day is likely much smarter than I am, and with far greater experience of working with the Julia ecosystem. So I won&rsquo;t repeat past grievances or rebuttals.</p>
+<p>This article is more concerned with the practicalities of using Julia on a day-to-day basis, working on a production codebase. While there are certainly idiosyncracies of the particular codebase I am working with, I believe these issues apply generally to software engineers and developers curious about Julia and using it for their own ends. This isn&rsquo;t intended as a scathing indictment, but rather a perspective I wish someone else had written from when I started working with Julia. For reference, all discussion assumes Julia 1.6, the version I use at work at the time of writing.</p>
+<h1 id="table-of-contents">Table of Contents</h1>
+<ol>
+<li><a href="#preamble">Preamble</a></li>
+<li><a href="#code-loading-and-eval">Code Loading and Eval</a></li>
+<li><a href="#testing-and-benchmarking">Testing and Benchmarking</a></li>
+<li><a href="#latency">Latency</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ol>
+<h2 id="preamble-607-words">Preamble (~607 words)</h2>
+<p>I have had a somewhat complicated relationship with the language over time. As no doubt many can relate, when I first heard of a language that combined the brevity and snappiness of Python with the lightning-fast performance of C, I thought that sounded like the bee&rsquo;s knees. When I joined my current company that mentioned Julia as the main language I&rsquo;d be working with, I was quite excited to be writing in a modern language and seeing what it could do, having come from a C++-based role previously.</p>
+<p>Fast forward to a few months in, and I was exasperated. Some developers will complain about Julia having 1-based indexing, or having column-major ordering. With well-written code (i.e. using <code>begin</code> and <code>end</code> rather than naked indices), the former practically feels like an implementation detail and is a non-issue 99% of the time. Since my codebase doesn&rsquo;t really deal too often with matrices, column-major ordering isn&rsquo;t really an issue worth writing about either. In my opinion these are not hills worth dying on and you quickly forget about them when working on Julia for a while. My issues were typically less syntactical and more about usage.</p>
+<p>Fast forward to now. In some respects I really like the language, and so my current view is somewhat mixed. In my opinion, I think the clearest-cut use-case for Julia is if you have a really big compute cluster to work with. The 1-based indexing, column-major ordering, and <a href="https://docs.julialang.org/en/v1/manual/parallel-computing/">rich set of parallel programming constructs</a> lead me to think that Julia&rsquo;s true purpose is to be a successor to Fortran. Certainly, these features would make translating old Fortran code a lot easier.</p>
+<p>This view is supported by the fact that Julia is one of just 4 languages in the <a href="https://www.avenga.com/magazine/julia-programming-language/">PetaFlop family</a> (the others being C, C++, and Fortran) and widely discussed in HPC news articles. If your use-case involves HPC, Julia is probably a very strong candidate. Unfortunately, not every use-case involves Cray supercomputers. Some code doesn&rsquo;t need to be optimised to the limits of your hardware. You might need robust packages, documentation, testing, good Stack Overflow answers that you totally didn&rsquo;t ctrl-c and ctrl-v, and so on. Boring? Probably, but that&rsquo;s what most developers will care about. Data scientists may find Julia a good fit too, but I can&rsquo;t comment - I am in the vein of a more traditional engineering role and will talk more from that angle accordingly.</p>
+<p>For all the problems I describe, I do like Julia, or at least bits of it. I think the language has real potential to be a challenger to Python. But that potential will only be realised if, at a minimum, <em>all</em> of the following problems are properly addressed. The Julia community might claim that these problems don&rsquo;t need fixing, or that their approximate solutions suffice. I respectfully disagree. That attitude would also be the main barrier to further adoption, because I certainly am not encouraged to keep using Julia with those kinds of responses. The Julia community might also claim such mainstream adoption is not a goal, or no longer a goal, and that&rsquo;s fine. But then their messaging should be adjusted accordingly - Julia isn&rsquo;t like Python with C-like performance, but a niche language, with niche trade-offs.</p>
+<p>Personally, I think such talk is defeatist, and rearranges the goalposts from Julia&rsquo;s original aims. Mainstream adoption should be a goal, Julia could achieve it, and the challenges associated with furthering the language (such as funding, widening the pool of willing core developers/maintainers, etc) can be greatly alleviated with wider adoption.</p>
+<p>With all of that said, onto the problems.</p>
+<h2 id="code-loading-and-evaluation-1220-words">Code Loading and Evaluation (~1220 words)</h2>
+<p>By far the most baffling problem on this list is to do with code loading, and how this plays so poorly with small convenience/utility files and tests (more on that later).</p>
+<p>In Julia, if you want to use code from another package, Julia developers have made huge strides over the years and doing so is now by and large a pleasant experience thanks to pre-compilation. It is also straightforward. Say for example you&rsquo;re using a third-party package like <code>DataFrames.jl</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># main.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> DataFrames
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Do some stuff with DataFrames...</span>
+</span></span></code></pre></div><p>This syntax is simple and crucially quite efficient, because compilation is typically already done ahead of time and so evaluation and compilation time is reduced at the point of use. Additionally, if I have multiple files that work with <code>DataFrames</code>, each of these files may independently import that package without having to evaluate the same code multiple times. This is clearly stated in Julia&rsquo;s manual in the <a href="https://docs.julialang.org/en/v1/manual/code-loading/">Code Loading section</a>.</p>
+<p>By contrast, and in a complete reversal of what I suspect many programmers would likely expect, using code from within your own codebase is more difficult! Let&rsquo;s say I have a general-purpose utilities file with various helper functions, custom exceptions, and/or other data types in my project:</p>
+<pre tabindex="0"><code>my-project/
+    | src/
+        | utilities.jl
+        | data-preprocessing.jl
+        | kernels.jl
+        | main.jl
+        ...
+</code></pre><!-- TODO: Mermaid not supported,  -->
+<p>With the following relation between files:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">  graph TD;
+      utilities.jl--&gt;data-preprocessing.jl;
+      utilities.jl--&gt;kernels.jl;
+      data-preprocessing.jl--&gt;main.jl;
+      kernels.jl--&gt;main.jl;
+</code></pre><p>You would think the language provides a simple, native mechanism for enabling this organisation of files efficiently. Unlike compiled languages, redundant <code>include</code>s in Julia have a <strong>runtime</strong> cost, which further motivates the need for something with similar semantics to how package loading works, or at the very least clearer guidance on good Julia design and better mechanisms for facilitating this. Sadly, this is not the case<sup>1</sup>. In Julia, <code>module</code>s and files are strictly separate entities<sup>2</sup>. In of itself, this does not block code loading akin to package loading. But it means that a developer effectively needs to do the following in order to access code in another file (assuming that <code>module</code>s are used):</p>
+<h1 id="todo-check-this-example">TODO: CHECK THIS EXAMPLE</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># data-preprocessing.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Preprocessing
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;path/to/utilities.jl&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#f92672">.</span>Utilities  <span style="color:#75715e"># assuming utilities.jl contains a similarly-named module</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Code using custom exceptions, type aliases, etc.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Preprocessing</span>
+</span></span></code></pre></div><p>What if I wanted to access <code>utilities.jl</code> in <code>kernels.jl</code>? You basically have two options, assuming you don&rsquo;t duplicate the code in both:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># kernels.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Kernels
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;path/to/data-preprocessing.jl&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#f92672">.</span>Utilities  <span style="color:#75715e"># implicitly </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Kernels</span>
+</span></span></code></pre></div><p>Alternatively:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># kernels.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Kernels
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;path/to/utilities.jl&#34;</span>)  <span style="color:#75715e"># Now only includes Utilities, but utilities.jl is included twice in main.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#f92672">.</span>Utilities
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Kernels</span>
+</span></span></code></pre></div><p>The former option is pretty ugly. Firstly, it violates a separation of concerns - if <code>data-preprocessing.jl</code> and <code>kernels.jl</code> don&rsquo;t rely on each other, they shouldn&rsquo;t need to reference each other at all. Only something that uses both modules should care about this. Secondly, there could be cross-cutting concerns - for example, custom exceptions with a common abstract type could be a legitimate use-case for both preprocessing as well as kernels, and grouping exceptions into a single file rather than scattering them across the codebase is a perfectly reasonable way to organise code. Type aliases like <code>Maybe{T} = Union{T, Nothing}</code> are another use-case, along with functions for things like file manipulation, or if <code>data-preprocessing.jl</code> contains functions that return something like a <code>Tensor</code> object that <code>kernels.jl</code> require as an input. If a <code>Tensor</code> type shouldn&rsquo;t live in a <code>utilities.jl</code> file, then fine. Move it into a <code>types.jl</code> or <code>tensor.jl</code> file, have it <code>include</code>d in <code>data-preprocessing.jl</code> and <code>kernels.jl</code>, and we are back at the same problem as before. Developers shouldn&rsquo;t be expected to organise their files in specific ways in order to get sensible runtime performance in 2022. Any such organisation should be strictly a <em>structural design choice</em>, and if the language has opinions on this, it should make the &lsquo;right&rsquo; way the path of least resistance, which Julia absolutely does not do.</p>
+<p>Following on in terms of the language having an opinion on package design, surely a simpler and clearer way of enforcing small packages would be to have checks in the runtime itself rather than relying on developers? If the runtime detects that a particular package has <code>include</code>d a file more than once, or more complex <code>include</code> hierarchies, it could raise warnings or even errors in a &lsquo;strict&rsquo; mode. The <code>FromFile.jl</code> package discussed below shows that such checks are not only possible, but relatively easy and with negligible cost, so there isn&rsquo;t really a performance cost to this. Any argument against such an approach must necessarily then be one of flexibility, which then effectively concedes that there may exist use-cases for other kinds of packages, such as ones with cross-functional files and modules which don&rsquo;t warrant full-scale packages. In turn, this then begs the question of why a native equivalent of <code>include_once</code> isn&rsquo;t present in the language. Or at the very least, why making a package isn&rsquo;t as simple as shuffling some code into a directory with <em>at most</em> a single line of code to start treating that directory as a separate package which can be published to the appropriate registry further down the line if needed.</p>
+<p>So if the language prevents efficient code loading from within your own package depending on how things are structured, what can be done? The best answer currently is <a href="https://github.com/Roger-luo/FromFile.jl"><code>FromFile.jl</code></a>. With an embarassingly simple macro, developers can load code from whatever file they like akin to how packages are loaded. If the specified file has already been loaded, code evaluation is not repeated. This is far simpler to understand and crucially brings consistency in how both third-party as well as local code are treated. This feature is used almost exclusively across my codebase, barring a small number of replaceable <code>include</code>s. I can safely say that there isn&rsquo;t a single reason why I would ever go back from this, because crucially <code>@from</code> enables nearly all of the same approaches with <code>include</code> with much greater flexibility on how files are structured. Why can&rsquo;t something like a native <code>@from</code> keyword not live alongside <code>include</code>? The answer is definitely not a technical one.</p>
+<p>Regardless of whether one likes the idea of <code>include</code> being the standard means of code loading, the need for <a href="https://github.com/PetrKryslUCSD/FinEtools.jl/blob/main/src/allmodules.jl">long <code>allmodules.jl</code></a> files which handle the topological ordering of the file hierarchy in various packages is a symptom of a basic problem with the language&rsquo;s code loading facilities, and/or the messaging from the core developers on how to structure code. This sort of thing looks like it could be automatic, and in my codebase it now is. I had a similar file to that <code>allmodules.jl</code> before, and now it is gone thanks to <code>FromFile</code>. That isn&rsquo;t a feature, even if the Julia community might pretend it is, it just looks like a nuisance that developers shouldn&rsquo;t need to deal with.</p>
+<p>While <code>FromFile</code> thankfully fixes this problem, it took more than 8 years for it to come into being. And developers still need to discover this library to begin with. As previously stated, if the language has views on this, they should either be enforcing this more explicitly, like in the runtime, and/or communicating this more clearly in things like the manual. A bit like how <code>FromFile</code> makes my dependencies transparent without hammering <code>eval</code>. This does not engender confidence in the language.</p>
+<h2 id="testing-and-benchmarking-890-words">Testing and Benchmarking (~890 words)</h2>
+<p>All production-grade codebases need to care about testing, and a more limited subset about benchmarking as well.</p>
+<p>First, let&rsquo;s start with the positives. Julia&rsquo;s testing features like floating-point comparison, various testing macros, and clear (albeit simple) convention of driving tests from a <code>runtests.jl</code> file are actually pretty solid. Julia also has a nifty profiler that plugs well with a bunch of visualisation tools for performance analysis from what I can tell. The ability to examine lowered code is also useful for optimisation.</p>
+<p>But there are drawbacks. Firstly, there is no clear convention on how benchmarking should be done in repos, like a <code>runbenchmarks.jl</code> file. Again, Julia emphasises performance, so this omission is noteworthy. While having performance &rsquo;tests&rsquo; has a number of problems, a more basic and standardised practice of just being able to easily run and maybe even track benchmarks would still be sensible. A basic benchmarking convention is both scientific in nature and convenient in that it makes reproducible and measurable performance metrics easily available to existing and new developers, rather than ad-hoc REPL sessions. This is definitely the smallest gripe on this list, but conversely it is also one of the easiest to fix.</p>
+<p>Secondly, testing is badly flawed for larger repos or repos that have large numbers of tests. In Julia, the convention is to have tests like so:</p>
+<pre tabindex="0"><code>my-project/
+    | src/
+        | utilities.jl  # included in both a.jl and b.jl in this example
+        | a.jl
+        | b.jl
+        ...
+    | test/
+        | runtests.jl  # includes all the relevant test files
+        | test_a.jl
+        | test_b.jl
+        ...
+</code></pre><p>With the developer then running tests like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project test/runtests.jl
+</span></span></code></pre></div><p>This would be fine, except for two problems:</p>
+<ul>
+<li><em>Julia has no native mechanism for running a subset of tests</em>.</li>
+</ul>
+<p>There is a PR for running a subset of tests via pattern-matching, except <a href="https://github.com/JuliaLang/julia/pull/33672">this has been ongoing for nearly three years at the time of writing</a>. Moreover, if you decide instead to <code>include</code> the source code in individual files like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># test_a.jl</span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;../src/a.jl&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># test_b.jl</span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;../src/b.jl&#34;</span>)
+</span></span></code></pre></div><p>You can now execute individual test files with commands like <code>julia --project test/test_a.jl</code>. However, you are then presented with the previous issue of code loading - <code>utilities.jl</code> is evaluated twice! For a large enough codebase with a large enough numbers of files, this increased the total testing time in my codebase&rsquo;s <code>runtests.jl</code> by 100%. <em><strong>One hundred percent</strong></em>. Thanks to <code>FromFile</code> that performance penalty has now been fixed.</p>
+<ul>
+<li><em>Julia runs tests eagerly, meaning tests are run in a fixed order and on a single thread</em></li>
+</ul>
+<p>This is daft for a language that, again, emphasises performance and testing. Running tests in a fixed order is widely considered a bad practice - Julia&rsquo;s testing macros enforce this as a convention. The way the runtime works in conjunction with these macros also means that they cannot be executed lazily, which means they can&rsquo;t be executed in parallel. For large codebases, this means you better be comfortable sitting around waiting for your tests to run. Python by contrast has no such issues, with <code>unittest</code> and <code>pytest</code> both enabling pattern-matching, and the latter enabling parallelism. Python&rsquo;s low latency makes running a lot of tests often feel like a breeze compared to Julia as well.</p>
+<p>Another gripe is that the fixed order of execution also means developers can rely on this as a crutch, thereby getting into the really bad habit of coupling tests together via shared state<sup>3</sup>, resulting in massive, tightly-coupled blocks of code that are hundreds of lines long:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>foo <span style="color:#f92672">=</span> make_foo(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@testset</span> <span style="color:#e6db74">&#34;increment_bar!&#34;</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    increment_bar!(foo)  <span style="color:#75715e"># mutate foo.bar</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@test</span> foo<span style="color:#f92672">.</span>bar <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@testset</span> <span style="color:#e6db74">&#34;do_another_thing_with_foo!&#34;</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    do_another_thing_with_foo!(foo)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@test</span> <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@testset</span> <span style="color:#e6db74">&#34;increment_bar! - non-default case&#34;</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    increment_bar!(foo)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@test</span> foo<span style="color:#f92672">.</span>bar <span style="color:#f92672">==</span> <span style="color:#ae81ff">12</span>  <span style="color:#75715e"># do_another_thing_with_foo! might have done weird things...</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>You can argue this issue rests with developers. I would argue that permuting tests would permanently solve this issue and we could move onto more interesting problems. So I personally think this is a big L on Julia&rsquo;s part.</p>
+<p>In fairness, there is a library <a href="https://github.com/JuliaTesting/ReTest.jl/"><code>ReTest.jl</code></a> that aims to solve most of these problems with testing, bar permutation. The issue is, aside from the fact that a third-party library is needed to fix such basic issues, that it doesn&rsquo;t really work either.</p>
+<p>In Julia, a seemingly handy feature is the ability to group tests under a common name, and nested <code>testset</code>s are the way of doing this. But if you&rsquo;re trying to run tests in parallel, <a href="https://github.com/JuliaTesting/ReTest.jl/issues/46"><code>ReTest</code> only runs a worker per top-level <code>testset</code> in a given file</a>. So if there is a single large (nested) <code>testset</code> per file, <code>ReTest</code> gives zero speed-up over the standard approach as it only parallelises tests across an individual file rather than discovering all of the tests across all files first before executing. In my codebase, my limited efforts to use <code>ReTest</code> and parallelise the tests found no speed-up at all.</p>
+<p>The library is also sub-par for documentation, and my attempts at contributing code were met with a maintainer that while friendly and supportive appears to be too busy or has moved on to other things. The library also has issues when running tests in parallel with logging, another fairly basic feature in a lot of production-grade codebases like mine. Considering that this library <em>specifically</em> was recommended by the core developers, that is pretty bad. This does not engender confidence in the ecosystem.</p>
+<h2 id="latency-940-words">Latency (~940 words)</h2>
+<p>Julia has an interesting performance profile, and the fact that it can be part of the PetaFlop family while enabling interactive computing is nothing short of impressive. However, again, not every use-case involves a Cray supercomputer and in my day-to-day job I find Python to be the snappier language in the codebases that use it. There are several reasons for this.</p>
+<p>The first issue is that Python is a natural fit for being called directly at the command-line or from a bash script, which at least I am familiar with. It is an interpreted language that has excellent integration with calling into C libraries if developers need more performance. This was, and remains, a fantastic idea with a great trade-off for a huge number of programmers. The prospect of lightly parsing and quickly evaluating code that doesn&rsquo;t need a lot of optimisation while simultaneously leveraging compiled code for the performance-critical parts makes for a language that &lsquo;feels&rsquo; very fast in practice.</p>
+<p>By contrast, Julia has a significant latency penalty for one-off code, such as a large pipeline that runs with a single input. While the developers have reduced latency a lot over the years, Python is still much faster when called at the command-line or from other code like bash scripts. In the Julia REPL admittedly the gap is much smaller than before, and even better still if using <code>Revise.jl</code>, a very popular Julia package and even mentioned in the manual. As a disclaimer, I have not used <code>Revise</code>, but have heard good things about it. Importantly, <a href="https://github.com/Roger-luo/FromFile.jl/pull/36"><code>Revise</code> also appears to work with <code>FromFile</code></a>, which is a huge plus in my opinion.</p>
+<p>Why haven&rsquo;t I used <code>Revise</code>? In truth I probably should. The first reason is because, understandably if not justifiably, I am concerned about it being reliable rather than a source of frustration. What <code>Revise</code> is trying to solve is a very challenging problem of keeping the code loaded in the REPL up-to-date, even if the programmer makes changes to the code or switches git branches. I have huge respect for Tim Holy, its author, and its various developers for trying to solve this problem. But it is a hard one and I am concerned that there may be edge-cases that I otherwise wouldn&rsquo;t need to think about with my current workflow. Again, I repeat, I have not used <code>Revise</code>. But that is my instinctive response.</p>
+<p>Another issue, possibly the smallest one, is that it forces a change in my workflow. Currently I edit code in my editor, and then I either try running some tests from the command-line or run a pipeline. It seems silly, but the mental shift to working from the REPL is high enough. This is entirely arbitrary though, and maybe other engineers will not have this problem. Since my codebase drives things through bash scripts most of the time, that probably doesn&rsquo;t help either.</p>
+<p>The final issue is that <code>Revise</code> is ultimately a band-aid around the true problem in my case, which is latency. This is apparent when you consider that not every workflow can fit into <code>Revise</code> - such as CI, environments over which I have limited control like running jobs in the cloud, and being called from other code like bash scripts. Python works seamlessly in all of these cases and needs no such libraries to perform well.</p>
+<p>In my opinion, the perfect way for Julia to solve this issue would be something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project --interpreted ...
+</span></span></code></pre></div><p>with code being modified like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> run_some_code()
+</span></span><span style="display:flex;"><span>    foo <span style="color:#f92672">=</span> first_non_performance_critical_function()
+</span></span><span style="display:flex;"><span>    bar <span style="color:#f92672">=</span> another_non_performance_critical_function()
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># JIT-compilation is opt-in via a `@jit` macro, and would run code</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># as it does currently in &#39;JIT-mode&#39;, which would remain the default.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@jit</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>        baz <span style="color:#f92672">=</span> performance_critical_function(foo, bar)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> baz
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>In my opinion this would be revolutionary. Unlike Python, I could get C-like performance with the literal flick of a switch or two rather than having to write things with a third-party library or another language. If some code is too slow in interpreted mode, wrap it in a <code>jit</code> block. But like Python, I would also get very low latency everywhere else. It is worth noting that Python now has a spectrum of approaches that approximate something like this, from using third-party libraries like numpy, to annotating code in a similar way using Numba, or writing code in Cython or C. Julia forces JIT-compilation everywhere, assuming you aren&rsquo;t just writing all code in a top-level script with no functions, and that is not always the optimal trade-off from a performance perspective.</p>
+<p>Although this is an ambitious change and I am sure comes with many challenges, such a solution is technically possible. FWIW, Julia actually &lsquo;interprets&rsquo; (or more accurately, enables arbitrary execution of) code in some scenarios like in the REPL or script code that isn&rsquo;t wrapped in functions. Furthermore, it would be easy enough to enable this as a default via a bash alias (e.g. <code>alias julia=julia --interpreted</code> in a <code>.bashrc</code> file), with existing Julia code continuing to use the runtime in the same way it does currently. And finally, it enables Julia to be more competitive with Python in a wider range of scenarios. <a href="https://www.theregister.com/2021/05/13/guido_van_rossum_cpython_3_11/">Python is not a stationary target and will only get faster</a>. It is then imperative that Julia does the same if it wants to be worth switching to for more developers in the future. I consider this solution to be completely in spirit with making Julia a high-performance language, if we think of high performance as minimising the time between writing some code and getting the output you want. Surely this definition of performance is worth optimising for?</p>
+<h2 id="conclusion-455-words">Conclusion (~455 words)</h2>
+<p>As I stated earlier, there are bits about the Julia language that I genuinely like. It feels concise like Python, but has a stronger type system that enables better debugging as well as performance. It has some powerful features like lisp-style macros (the basis of <code>FromFile</code>) and its package manager is leagues better than Python&rsquo;s mess of pip, pyvenv, venv, virtualenv, etc. For scientific computing, the ecosystem might not be quite as good as Python&rsquo;s, but it&rsquo;s not bad either.</p>
+<p>However, the above issues would discourage me from using Julia in prod, at least for now. If however I was forced to, I would recommend several &lsquo;best&rsquo; practices.</p>
+<p>For code organisation, I would try to keep packages small, with simple structure, and investigate private registries for hosting multiple packages for non open-source code. I wouldn&rsquo;t be beholden to having no duplicate <code>include</code>s though, particularly for types that span many files, so I would have <code>FromFile</code> as a dependency. <code>FromFile</code> is a must for enabling individually testable files while the core devs get pattern-matching working for tests.</p>
+<p>On the subject of testing, I would generally avoid nested <code>testset</code>s as in my experience they often encourage tightly coupled code, although in principle I have nothing against them. They also prohibit parallelism with <code>ReTest</code> should you decide to use it. <code>ReTest</code> is maybe worth trying, but given the lack of maintenance I would probably avoid it. (Unit) Tests should be independent as a rule, with appropriate setup and tear-down including things like logging being enabled. This is a faff to enforce, and definitely a minus in Julia compared to Python&rsquo;s options.</p>
+<p>For daily usage, I would give <code>Revise</code> a try, and to facilitate this I would avoid workflows that drive Julia code through other scripts written in bash or Python. Julia is more readable than bash at least, and having these top-level functions natively would allow more workflows to occur more easily in the Julia REPL, which makes <code>Revise</code> an easier sell.</p>
+<p>As a minor gripe, if you&rsquo;re going to use logging, please make it easy to turn off (meaning a top-level switch), or pipe output to a log file, or just use logging sparingly.</p>
+<p>Finally, I would be more judicious in using things like multiple dispatch and macros. These are very cool features, but they should be used in cases where they are warranted. Using multiple dispatch with most dispatches having redundant arguments is probably a sign that multiple dispatch is the wrong abstraction to use. Macros are very powerful, but also very tricky to write correctly and excessive use means you have almost a different language altogether, which makes onboarding new developers all the more difficult. Use them judiciously.</p>
+<p>Thanks for reading and hope this helps!</p>
+<hr>
+<h6 id="1-the-prevailing-view-not-at-all-clear-from-the-julia-manual-appears-to-be-to-move-such-utilities-into-a-package-and-having-extremely-small-packages-while-this-sounds-fine-not-all-julia-code-is-going-to-be-open-source-and-having-to-maintain-multiple-packages-internally-is-clearly-much-more-of-a-faff-compared-to-just-having-a-few-medium-sized-files-that-arent-likely-to-be-used-anywhere-else-if-i-were-writing-a-julia-codebase-myself-i-would-investigate-packages-more-but-havent-tried-them-so-i-wont-comment-further">1. The prevailing view (not at all clear from the Julia manual) appears to be to move such utilities into a package and having extremely small packages. While this sounds fine, not all Julia code is going to be open-source and having to maintain multiple packages internally is clearly much more of a faff compared to just having a few medium-sized files that aren&rsquo;t likely to be used anywhere else. If I were writing a Julia codebase myself I would investigate packages more, but haven&rsquo;t tried them, so I won&rsquo;t comment further.</h6>
+<h6 id="2-for-developers-unfamiliar-with-julia-julia-modules-are-effectively-like-namespaces-with-packages-being-akin-to-complete-units-of-software-for-instance-numpy-would-be-a-package-in-julia-terminology">2. For developers unfamiliar with Julia, Julia <code>module</code>s are effectively like namespaces, with &lsquo;packages&rsquo; being akin to complete units of software. For instance, <code>numpy</code> would be a package in Julia terminology.</h6>
+<h6 id="3-i-acknowledge-that-particular-test-order-may-be-helpful-in-certain-kinds-of-integration-tests-particularly-with-expensive-operations-like-interacting-with-databases-but-the-risk-of-huge-coupled-code-blocks-remains-a-valid-criticism-in-any-case-i-am-talking-here-about-unit-tests-generally-these-should-be-isolated-where-possible">3. I acknowledge that particular test order may be helpful in certain kinds of integration tests, particularly with expensive operations like interacting with databases. But the risk of huge coupled code-blocks remains a valid criticism. In any case, I am talking here about unit tests. Generally, these should be isolated where possible.</h6>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
+    &copy;  Daniel Soutar 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

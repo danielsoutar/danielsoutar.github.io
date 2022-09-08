@@ -4,48 +4,47 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>Daniel Soutar  | Faster convolutions with Winograd (Part 2)</title>
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-
+    <title>Faster convolutions with Winograd (Part 2) | Daniel Soutar</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.73.0" />
+    <meta name="description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs.">
+    <meta name="generator" content="Hugo 0.102.3" />
     
     
-      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
-    
-
     
     
-      <link href="/dist/css/app.ab4b67a3ea25990fa8279f3b7ef08b61.css" rel="stylesheet">
+      <meta name="robots" content="noindex, nofollow">
     
 
     
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
 
+
+
+    
+    
     
       
-    
 
     
 
+    
+    
     <meta property="og:title" content="Faster convolutions with Winograd (Part 2)" />
 <meta property="og:description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://danielsoutar.github.io/projects/winograd_2/" />
+<meta property="og:url" content="https://danielsoutar.github.io/projects/winograd_2/" /><meta property="article:section" content="projects" />
 <meta property="article:published_time" content="2020-01-12T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-01-12T00:00:00+00:00" />
+
 <meta itemprop="name" content="Faster convolutions with Winograd (Part 2)">
-<meta itemprop="description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs.">
-<meta itemprop="datePublished" content="2020-01-12T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-01-12T00:00:00&#43;00:00" />
+<meta itemprop="description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs."><meta itemprop="datePublished" content="2020-01-12T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-01-12T00:00:00+00:00" />
 <meta itemprop="wordCount" content="3239">
-
-
-
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Faster convolutions with Winograd (Part 2)"/>
 <meta name="twitter:description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs."/>
 
+	
   </head>
 
   <body class="ma0 avenir bg-white">
@@ -58,10 +57,14 @@
     <div class="bg-black">
       <nav class="pv3 ph3 ph4-ns" role="navigation">
   <div class="flex-l justify-between items-center center">
-    <a href="https://danielsoutar.github.io" class="f3 fw2 hover-white no-underline white-90 dib">
-      Daniel Soutar
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Daniel Soutar
+      
     </a>
     <div class="flex-l items-center">
+      
+
       
         <ul class="pl0 mr3">
           
@@ -92,27 +95,33 @@
         </ul>
       
       
-
-
-
-
-
-
-  <a href="https://www.linkedin.com/in/daniel-soutar" class="link-transition linkedin link dib z-999 pt3 pt0-l mr2" title="LinkedIn link">
-    <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
-</svg>
-
-  </a>
-
-
-  <a href="https://github.com/danielsoutar" class="link-transition github link dib z-999 pt3 pt0-l mr2" title="Github link">
-    <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
   <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
 </svg>
-
-  </a>
-
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
 
     </div>
   </div>
@@ -125,19 +134,50 @@
 
     <main class="pb7" role="main">
       
-  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
-
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
     <header class="mt4 w-100">
-      <p class="f6 b helvetica tracked">
+      <aside class="instapaper_ignoref b helvetica tracked">
           
         PROJECTS
-      </p>
-      <h1 class="f1 athelas mb1">Faster convolutions with Winograd (Part 2)</h1>
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://danielsoutar.github.io/projects/winograd_2/&amp;title=Faster%20convolutions%20with%20Winograd%20%28Part%202%29" class="ananke-social-link linkedin no-underline" aria-label="share on LinkedIn">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Faster convolutions with Winograd (Part 2)</h1>
+      
+      
       
       <time class="f6 mv4 dib tracked" datetime="2020-01-12T00:00:00Z">January 12, 2020</time>
-    </header>
+      
 
-    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><!-- TODO: Move this series into the 'Posts' section rather than 'Projects'. -->
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><!-- TODO: Move this series into the 'Posts' section rather than 'Projects'. -->
 <p>In this post I&rsquo;ll be introducing the Winograd algorithm, along with some snazzy pictures.</p>
 <p>If you haven&rsquo;t read part 1, I highly recommend it. That post gives a good motivation for why we want Winograd to start with.</p>
 <p>To remind you, Winograd is the algorithm used in MKL-DNN, cuDNN, Theano, Tensorflow, and PyTorch for computing 3x3 convolutions<sup>1</sup>. For some performance figures against the naive algorithm and <em>im2col</em>, a fast convolution algorithm, look for part 3 of this series. Those figures will show that the last 16 or so minutes of your life reading this post and the previous one were not, in fact, a complete waste of time.</p>
@@ -147,7 +187,7 @@
 <p>Before we dive in, it&rsquo;s worth noting three things.</p>
 <p>The first is that <em>im2col</em>, although a fast algorithm, is fairly memory-hungry (see my previous post for more on this), which motivates the search for a better algorithm. The second thing is, surprisingly, <em>im2col</em> does not do the minimal number of floating-point (i.e. real) multiplications required for a convolution!</p>
 <p>This may seem surprising, especially if I tell you that a <strong>single</strong> dot product <em>does</em> do the provably minimal number of real multiplications. That is, functionally speaking, you cannot do a dot product with less than <em>n</em> floating-point multiplications, where <em>n</em> is the size of the vectors. But once you start doing multiple dot products with the same filter, it&rsquo;s a different story. Winograd is not just fast, but is faster than <em>im2col</em> primarily through this minimal number of multiplications at the expense of some comparatively small overhead.</p>
-<p>The more mathematically-familiar readers among you might now be thinking, &ldquo;well isn&rsquo;t that exactly what the FFT is for?&ldquo;<sup>2</sup>. You&rsquo;d be absolutely correct. But FFTs are problematic - there is the substantial overhead and memory involved in using complex numbers, and writing a good FFT routine is pretty hard. But the <em><strong>key</strong></em> reason, my third important point, is that the ubiquitous 3x3 filter size usually isn&rsquo;t large enough for the FFT to claw back the deficit over <em>im2col</em>. The exception is usually with very deep inputs, large images, or very large batch sizes. All of which are much more niche applications.</p>
+<p>The more mathematically-familiar readers among you might now be thinking, &ldquo;well isn&rsquo;t that exactly what the FFT is for?&quot;<sup>2</sup>. You&rsquo;d be absolutely correct. But FFTs are problematic - there is the substantial overhead and memory involved in using complex numbers, and writing a good FFT routine is pretty hard. But the <em><strong>key</strong></em> reason, my third important point, is that the ubiquitous 3x3 filter size usually isn&rsquo;t large enough for the FFT to claw back the deficit over <em>im2col</em>. The exception is usually with very deep inputs, large images, or very large batch sizes. All of which are much more niche applications.</p>
 <p>There is a delicate but very valuable middle-ground here, where <em>im2col</em> is at the mercy of memory issues, and the FFT is too heavyweight. A featherweight FFT would be perfect - the metaphoric &lsquo;Coke Light&rsquo; of FFTs, if you will. As it turns out, that is pretty much exactly what Winograd is. Read on&hellip;</p>
 <h2 id="the-contrived-example">The Contrived Example</h2>
 <p>I now present to you what is surely the most ridiculous motivation for any algorithm on the internet. Say we have a 1D input of length 4, a 1D filter of length 3, stride 1, and using valid padding. If we do a 1D convolution:</p>
@@ -167,18 +207,18 @@
 </ul>
 <p>I genuinely wonder if Shmuel Winograd (hence the name) considered throwing in the towel and just retiring when he found this was the result of all that work. But it was not in vain! As it turns out, this is the provably minimal number of multiplications for a 3-element filter computing 2 outputs (assuming a stride of 1).</p>
 <h2 id="economies-of-scale">Economies of Scale</h2>
-<p>The other interesting observation from that example is that the number of multiplies is now linear with the size of this particular input. Instead of 6 <code>fma</code>s, we now only do 4. This generalises to arbitrary dimensions! If we extend the 1D case to 2D, we&rsquo;ll have a 3x3 filter, and a 4x4 input. In that case, we &lsquo;nest&rsquo; the Winograd routine with itself, and now  we do 16 <code>fma</code>s (4 * 4 = 16) instead of 36 (9 * 4 = 36), a 2.25x saving.</p>
+<p>The other interesting observation from that example is that the number of multiplies is now linear with the size of this particular input. Instead of 6 <code>fma</code>s, we now only do 4. This generalises to arbitrary dimensions! If we extend the 1D case to 2D, we&rsquo;ll have a 3x3 filter, and a 4x4 input. In that case, we &rsquo;nest&rsquo; the Winograd routine with itself, and now  we do 16 <code>fma</code>s (4 * 4 = 16) instead of 36 (9 * 4 = 36), a 2.25x saving.</p>
 <p>We won&rsquo;t be able to make arbitrarily large tiles with this property (or rather, there will be no gains in doing so), but this should pique your curiosity. We suddenly can do less than half the number of <code>fma</code> instructions for the same result.</p>
 <p>The reason why we can basically ignore the cost of transforms in this analysis is to do with complexity and how convolutions scale. Andrew Lavin, one of the authors from the Winograd for DNNs paper in 2015, has <a href="https://github.com/andravin/wincnn/blob/master/FAQ.md">a great GitHub repo that mentions this</a>, but I&rsquo;ll summarise here. Let N equal the mini-batch size, H and W the height and width of the input, C the number of input channels, and K the number of output channels.</p>
 <p>For the direct method, we do approximately NHWCK9 <code>fma</code> instructions for a 3x3 with stride 1 (minor padding considerations notwithstanding). For Winograd, the input transform is O(NHWC), the filter transform O(CK), and the output transform is O(NHWK). The cost of the multiplication stage is O(NHWCK4).</p>
 <p>For small inputs, there is little to no gain at all using Winograd over the direct method, as the first example showed. But for sufficiently <em>large</em> inputs, the costs of these transforms are <em>additive</em>, not multiplicative. The dominant cost is in the multiplication stage. And that is 2.25x less than the naive method (9 / 4 = 2.25). Provided each of the factors N, H, W, C, and K are all large enough, the cost of the multiplication stage dominates, and the 2.25x saving becomes more and more apparent. So Winograd <em>scales</em> better than the direct method.</p>
 <h2 id="convolutions-as-polynomial-multiplication">Convolutions as polynomial multiplication</h2>
 <p>So what goes into that curious example? The secret, as is often in mathematics, is discovering identities. Cross-correlations (which are the actual operation performed in <em><strong>convolutional</strong></em> neural networks) can be expressed as follows:</p>
-<p><img src="/images/cross-correlation-equation.svg" height="70" width="12" /></p>
+<img src="/images/cross-correlation-equation.svg" height="70" width="12" />
 <p>Now I&rsquo;m going to remind you of everyone&rsquo;s least favourite acronym: FOIL. Remember these?</p>
-<p><img src="/images/foil-example.svg" height="70" width="12" /></p>
+<img src="/images/foil-example.svg" height="70" width="12" />
 <p>These are for linear equations (or polynomials of degree 1). But this operation generalises to arbitrary polynomials (here we assume they are of the same degree). Assuming <em>a</em> and <em>b</em> are the vectors of coeffients:</p>
-<p><img src="/images/foil-equation.svg" height="70" width="12" /></p>
+<img src="/images/foil-equation.svg" height="70" width="12" />
 <p>If you ignore the <em>x</em> s, we have a structurally identical operation to convolution: so convolution can be interpreted as polynomial multiplication! If you&rsquo;ve heard of a vector space (don&rsquo;t worry if not), the idea that polynomials (specifically their coefficients) comprise a vector space should seem intuitive. You can add polynomials together, you can scale them by some scalar value, and as a bonus, we&rsquo;ve just demonstrated we can multiply them.</p>
 <p>What this means is that if we find a way to optimise computing polynomial multiplication, then by extension we have found an optimisation for computing convolutions, and vice versa. And there is one, that Winograd makes use of. This optimisation is known as <em>Lagrange Interpolation</em>.</p>
 <h2 id="reducing-multiplications-via-interpolation">Reducing multiplications via interpolation</h2>
@@ -200,7 +240,7 @@
 <p><img src="/images/winograd-input-tiling.png" alt="Visualising the tiling of the input for Winograd" title="A 4x4 input tile from the input, which will undergo an input transform. Note that this is per channel."></p>
 <p>For each tile like the one above, we then perform the input transform. Likewise, the filter undergoes the filter transform (this need only be done once for the filter, mind). The diagonal line below represents the 16 real multiplications that we do in place of the 36 of the naive method. The transformed input is on the left, and the transformed filter at the top:</p>
 <p><img src="/images/winograd-insane-pointwise.png" alt="Visualising the pointwise multiplications for Winograd" title="Visualising Winograd for a single tile, over a single input channel"></p>
-<p>Now let&rsquo;s think for a minute. This tiling is only done over a single channel. Yet for any given filter we need to accumulate the results over multiple input channels for a single output channel. So we can transform tiles at the same position but &lsquo;through&rsquo; the input in all of the input channels, and stack them on top of each other. The output transform then only has to be done once, instead of each time per input channel. This is illustrated below.</p>
+<p>Now let&rsquo;s think for a minute. This tiling is only done over a single channel. Yet for any given filter we need to accumulate the results over multiple input channels for a single output channel. So we can transform tiles at the same position but &rsquo;through&rsquo; the input in all of the input channels, and stack them on top of each other. The output transform then only has to be done once, instead of each time per input channel. This is illustrated below.</p>
 <p><img src="/images/winograd-insane-dot-product.png" alt="Visualising the dot products for Winograd" title="Visualising Winograd for a single tile, over all input channels"></p>
 <p>Now instead of 16 scalar multiplications, we have 16 dot products. This means we can use highly optimised level 1 routines from BLAS (i.e. linear algebra) libraries. But we can group up the computation further. We have multiple filters, and each of these can be computed independently of each other. So if we stack these transformed filters next to each other, we can amortise the cost of calling the filter transform to be done only once, rather than once per output channel. It&rsquo;s a bit tricky, but I hope you can see the staggered vectors that line up with the transformed filter matrices:</p>
 <p><img src="/images/winograd-insane-matvec.png" alt="Visualising the matrix-vector products for Winograd" title="Visualising Winograd for a single tile, over all input and output channels"></p>
@@ -226,10 +266,11 @@
 <ul class="pa0">
   
 </ul>
-<div class="mt6">
-        
+<div class="mt6 instapaper_ignoref">
+      
+      
       </div>
-    </main>
+    </div>
 
     <aside class="w-30-l mt6-l">
 
@@ -241,18 +282,42 @@
   </article>
 
     </main>
-    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
-    &copy; 2020 Daniel Soutar
+    &copy;  Daniel Soutar 2022 
   </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
   </div>
 </footer>
-
-    
-
-  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
-
 
   </body>
 </html>
