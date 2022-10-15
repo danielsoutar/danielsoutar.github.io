@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://danielsoutar.github.io/</loc>
-    <lastmod>2022-09-05T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://danielsoutar.github.io/posts/thoughts-on-julia/</loc>
-    <lastmod>2022-09-05T00:00:00+00:00</lastmod>
+    <lastmod>2022-10-15T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>https://danielsoutar.github.io/posts/</loc>
-    <lastmod>2022-09-05T00:00:00+00:00</lastmod>
+    <lastmod>2022-10-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://danielsoutar.github.io/posts/thoughts-on-julia-1/</loc>
+    <lastmod>2022-10-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://danielsoutar.github.io/posts/thoughts-on-julia-2/</loc>
+    <lastmod>2022-10-15T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Thoughts on Julia: An Engineer&#39;s Take (Part 2) | Daniel Soutar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency and issues with testing.">
+    <meta name="generator" content="Hugo 0.102.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 2)" />
+<meta property="og:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency and issues with testing." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://danielsoutar.github.io/posts/thoughts-on-julia-2/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-10-15T00:00:00+00:00" />
+
+<meta itemprop="name" content="Thoughts on Julia: An Engineer&#39;s Take (Part 2)">
+<meta itemprop="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency and issues with testing."><meta itemprop="datePublished" content="2022-10-15T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-10-15T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2432">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 2)"/>
+<meta name="twitter:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency and issues with testing."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Daniel Soutar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/projects/" title="Projects page">
+              Projects
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://danielsoutar.github.io/posts/thoughts-on-julia-2/&amp;title=Thoughts%20on%20Julia:%20An%20Engineer%27s%20Take%20%28Part%202%29" class="ananke-social-link linkedin no-underline" aria-label="share on LinkedIn">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Thoughts on Julia: An Engineer&#39;s Take (Part 2)</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-10-15T00:00:00Z">October 15, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="introduction">Introduction</h2>
+<p><em>Disclaimer: These views are my own and do not necessarily reflect the views of my employer.</em></p>
+<p>As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency and issues with testing. You don&rsquo;t need to have read part 1 but it does interact with some of the limitations in testing, so it helps.</p>
+<h2 id="testing-and-benchmarking">Testing and Benchmarking</h2>
+<p>All production-grade codebases need to care about testing, and a more limited subset about benchmarking as well.</p>
+<p>First, let&rsquo;s start with the positives. Julia&rsquo;s testing features like floating-point comparison, various testing macros, and clear (albeit simple) convention of driving tests from a <code>runtests.jl</code> file are actually pretty solid and you have a sense of consistency across packages, which is great. Julia also has a nifty profiler that plugs well with a bunch of visualisation tools for performance analysis from what I can tell. The ability to examine lowered code is also useful for optimisation.</p>
+<p>But there are drawbacks. Firstly, there is no clear convention on how benchmarking should be done in repos, like a <code>runbenchmarks.jl</code> file. Again, Julia emphasises performance, so this omission is noteworthy. While having automated performance &rsquo;tests&rsquo; has a number of problems (particularly its susceptibility to noise), a more basic and standardised practice of just being able to easily run and maybe even track benchmarks would still be sensible (something like asv perhaps?). A basic benchmarking convention is both scientific in nature and convenient in that it makes reproducible and measurable performance metrics easily available to existing and new developers, rather than ad-hoc REPL sessions. This is definitely the smallest gripe on this list, but conversely it is also one of the easiest and most obvious to fix.</p>
+<p>Secondly, testing is badly flawed for larger repos or repos that have large numbers of tests. In Julia, the convention is to have tests like so:</p>
+<pre tabindex="0"><code>my-project/
+    | src/
+        | utilities.jl  # included in both a.jl and b.jl in this example
+        | a.jl
+        | b.jl
+        ...
+    | test/
+        | runtests.jl  # includes all the relevant test files
+        | test_a.jl
+        | test_b.jl
+        ...
+</code></pre><p>With the developer then running tests like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project test/runtests.jl
+</span></span></code></pre></div><p>This would be fine, except for two problems:</p>
+<ul>
+<li><em>Julia has no native mechanism for running a subset of tests</em>.</li>
+</ul>
+<p>There is a PR for running a subset of tests via pattern-matching, except <a href="https://github.com/JuliaLang/julia/pull/33672">this has been ongoing for nearly three years at the time of writing</a>. Moreover, if you decide instead to <code>include</code> the source code in individual files like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># test_a.jl</span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;../src/a.jl&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># test_b.jl</span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;../src/b.jl&#34;</span>)
+</span></span></code></pre></div><p>You can now execute individual test files with commands like <code>julia --project test/test_a.jl</code>. However, you are then presented with the issue of code loading mentioned in part 1 - <code>utilities.jl</code> is evaluated twice! For a large enough codebase with a large enough numbers of files, this increased the total testing time in my codebase&rsquo;s <code>runtests.jl</code> by 2x. <em><strong>2x</strong></em>. Thanks to <code>FromFile</code> that performance penalty has now been fixed. But we really shouldn&rsquo;t have gotten here to begin with.</p>
+<ul>
+<li><em>Julia runs tests eagerly, meaning tests are run in a fixed order and on a single thread</em></li>
+</ul>
+<p>This is daft for a language that, again, emphasises performance and testing. Running tests in a fixed order is widely considered a sub-optimal practice - Julia&rsquo;s testing macros enforce this as a convention. The way these macros work also means that they cannot be executed lazily by enclosing them in functions, because this plays badly with nested testsets and how they print results (<a href="https://github.com/JuliaLang/julia/issues/43662">see here for my ticket</a>). For large codebases, this means you better be comfortable sitting around waiting for your tests to run. Python by contrast has no such issues, with <code>unittest</code> and <code>pytest</code> both enabling pattern-matching, and the latter enabling parallelism. Python&rsquo;s low latency makes running a lot of tests often feel like a breeze compared to Julia as well.</p>
+<p>Another gripe is that the fixed order of execution also means developers can rely on this as a crutch, thereby getting into the really bad habit of coupling tests together via shared state<sup>1</sup>, resulting in massive, tightly-coupled blocks of code that are hundreds of lines long:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>foo <span style="color:#f92672">=</span> make_foo(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@testset</span> <span style="color:#e6db74">&#34;increment_bar!&#34;</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    increment_bar!(foo)  <span style="color:#75715e"># mutate foo.bar</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@test</span> foo<span style="color:#f92672">.</span>bar <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@testset</span> <span style="color:#e6db74">&#34;do_another_thing_with_foo!&#34;</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    do_another_thing_with_foo!(foo)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@test</span> <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@testset</span> <span style="color:#e6db74">&#34;increment_bar! - non-default case&#34;</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    increment_bar!(foo)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># do_another_thing_with_foo! might have done weird things...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@test</span> foo<span style="color:#f92672">.</span>bar <span style="color:#f92672">==</span> <span style="color:#ae81ff">12</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>You can argue this issue rests with developers. I would argue that allowing permuting tests would solve this issue far quicker and we could move onto more interesting problems. So I personally think this is a big L on Julia&rsquo;s part.</p>
+<p>In fairness, there is a library <a href="https://github.com/JuliaTesting/ReTest.jl/"><code>ReTest.jl</code></a> that aims to solve most of these problems with testing, bar permutation. The problem is, aside from the fact that a third-party library is needed to fix such basic issues, that it doesn&rsquo;t really work either (and nor is it maintained).</p>
+<p>In Julia, a seemingly handy feature is the ability to group tests under a common name, and nested <code>testset</code>s are the way of doing this. But if you&rsquo;re trying to run tests in parallel, <a href="https://github.com/JuliaTesting/ReTest.jl/issues/46"><code>ReTest</code> only runs a worker per top-level <code>testset</code> in a given file</a>. So if there is a single large (nested) <code>testset</code> per file, <code>ReTest</code> gives <em>zero</em> speed-up over the standard approach as it only parallelises tests across an individual file rather than discovering all of the tests across all files first before executing. In my codebase, my limited efforts to use <code>ReTest</code> and parallelise the tests found no speed-up at all.</p>
+<p>The library is also sub-par for documentation, and my attempts at contributing code were met with a maintainer that while friendly and supportive appears to be too busy or has moved on to other things. The library also has issues when running tests in parallel with logging, another fairly basic feature in a lot of production-grade codebases like mine. Considering that this library <em>specifically</em> was recommended by the core developers, that is pretty bad. This does not engender confidence in the ecosystem.</p>
+<h2 id="latency">Latency</h2>
+<p>Julia has an interesting performance profile, and the fact that it can be part of the PetaFlop family while enabling interactive computing is nothing short of impressive. However, again, not every use-case involves a Cray supercomputer and in my day-to-day job I find Python to be the snappier language in the codebases that use it. There are several reasons for this.</p>
+<p>The first issue is that Python is a natural fit for being called directly at the command-line or from a bash script, which at least I am familiar with. It is an interpreted language that has excellent integration with calling into C libraries if developers need more performance. This was, and remains, a fantastic idea with a great trade-off for a huge number of programmers. The prospect of lightly parsing and quickly evaluating code that doesn&rsquo;t need a lot of optimisation while simultaneously leveraging compiled code for the performance-critical parts makes for a language that &lsquo;feels&rsquo; quite fast in practice.</p>
+<p>By contrast, Julia has a significant latency penalty for one-off code, such as a large pipeline that runs with a single input. While the developers have reduced latency a lot over the years, Python is still much faster when called at the command-line or from other code like bash scripts. In the Julia REPL admittedly the gap is much smaller than before, and better still if using <code>Revise.jl</code>, a very popular Julia package and even mentioned in the manual. As a disclaimer, I have not used <code>Revise</code>, but have heard good things about it. Importantly, <a href="https://github.com/Roger-luo/FromFile.jl/pull/36"><code>Revise</code> also appears to work with <code>FromFile</code></a>, which is a huge plus in my opinion.</p>
+<p>Why haven&rsquo;t I used <code>Revise</code>? In truth I probably should. The first reason is because, understandably if not justifiably, I am concerned about it being reliable rather than a source of frustration. What <code>Revise</code> is trying to solve is a very challenging problem of keeping the code loaded in the REPL up-to-date with the source code, even if the programmer makes changes to the code or switches git branches. I have huge respect for Tim Holy, its author, and its various developers for trying to solve this problem. But it is a hard one and I am concerned that there may be edge-cases that I otherwise wouldn&rsquo;t need to think about with my current workflow. Again, I repeat, I have not used <code>Revise</code>. But that is my instinctive response.</p>
+<p>Another issue, possibly the smallest one, is that it forces a change in my workflow. Currently I edit code in my editor, and then I either try running some tests from the command-line or run a pipeline. It seems silly, but the mental shift to working from the REPL is high enough that it feels like a barrier. This is entirely arbitrary though, and maybe other engineers will not have this problem. Since my codebase drives things through bash scripts a fair amount of the time, that probably doesn&rsquo;t help either.</p>
+<p>The final issue is that <code>Revise</code> is ultimately a band-aid around the true problem in my case, which is latency. This is apparent when you consider that not every workflow can fit into <code>Revise</code> - such as CI, environments over which I have limited control like running jobs in the cloud, and being called from other code like bash scripts. Python works seamlessly in all of these cases and needs no such libraries to perform well.</p>
+<p>In my opinion, the perfect way for Julia to solve this issue would be something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project --interpreted ...
+</span></span></code></pre></div><p>with code being modified like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> run_some_code()
+</span></span><span style="display:flex;"><span>    foo <span style="color:#f92672">=</span> first_non_performance_critical_function()
+</span></span><span style="display:flex;"><span>    bar <span style="color:#f92672">=</span> another_non_performance_critical_function()
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># JIT-compilation is opt-in via a `@jit` macro, and would run code</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># as it does currently in &#39;JIT mode&#39; which would remain the default.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># In &#39;JIT-mode&#39;, @jit just evaluates the block like any other code.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@jit</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>        baz <span style="color:#f92672">=</span> performance_critical_function(foo, bar)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> baz
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>In my opinion this would be revolutionary. Unlike Python, I could get C-like performance with the literal flick of a switch or two rather than having to write things with a third-party library or another language. If some code is too slow in interpreted mode, wrap it in a <code>jit</code> block. But like Python, I would also get very low latency everywhere else. It is worth noting that Python now has a spectrum of approaches that approximate something like this, from using third-party libraries like numpy, to annotating code in a similar way using Numba, or writing code in Cython or C. Julia forces JIT-compilation everywhere, assuming you aren&rsquo;t just writing all code in a top-level script with no functions, and that is not always the optimal trade-off from the end-user&rsquo;s perspective.</p>
+<p>Although this is an ambitious change and I am sure comes with many challenges, such a solution is technically possible. FWIW, Julia actually &lsquo;interprets&rsquo; (or more accurately, enables arbitrary execution of) code in some scenarios like in the REPL or script code that isn&rsquo;t wrapped in functions. Furthermore, it would be easy enough to enable this as a default via a shell alias (e.g. <code>alias julia=julia --interpreted</code> in a <code>.bashrc</code> file), with existing Julia code continuing to use the runtime in the same way it does currently. And finally, it enables Julia to be more competitive with Python in a wider range of scenarios. <a href="https://www.theregister.com/2021/05/13/guido_van_rossum_cpython_3_11/">Python is not a stationary target and will only get faster</a>. It is then imperative that Julia does the same if it wants to be worth switching to for more developers in the future. I consider this solution to be completely in spirit with making Julia a high-performance language, if we think of high performance as minimising the time between writing some code and getting the output you want. Surely this definition of performance is worth optimising for?</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>As I stated earlier, there are bits about the Julia language that I genuinely like. It feels concise like Python, but has a stronger type system that enables better debugging as well as performance. It has some powerful features like lisp-style macros (the basis of <code>FromFile</code>) and its package manager is leagues better than Python&rsquo;s mess of pip, pyvenv, venv, virtualenv, etc. For scientific computing, the ecosystem might not be quite as good as Python&rsquo;s, but it&rsquo;s not bad either.</p>
+<p>However, the above issues would discourage me from using Julia in prod, at least for now. If however I was forced to, I would recommend several &lsquo;best&rsquo; practices.</p>
+<p>For code organisation, I would try to keep packages small, with simple structure, and investigate private registries for hosting multiple packages for non open-source code. I wouldn&rsquo;t be beholden to having no duplicate <code>include</code>s though, particularly for types that span many files, so I would have <code>FromFile</code> as a dependency. <code>FromFile</code> is a must for enabling individually testable files while the core devs get pattern-matching working for tests.</p>
+<p>On the subject of testing, I would generally avoid nested <code>testset</code>s as in my experience they often encourage tightly coupled code, although in principle I have nothing against them. They also prohibit parallelism with <code>ReTest</code> should you decide to use it. <code>ReTest</code> is maybe worth trying, but given the lack of maintenance I would probably avoid it. (Unit) Tests should be independent as a rule, with appropriate setup and tear-down including things like logging being enabled.</p>
+<p>For daily usage, I would give <code>Revise</code> a try, and to facilitate this I would avoid workflows that drive Julia code through other scripts written in bash or Python. Julia is more readable than bash at least (and actually implements quite a few bash commands, so the conversion is probably not that hard in a lot of cases), and having these top-level functions natively would allow more workflows to occur more easily in the Julia REPL, which makes <code>Revise</code> an easier sell.</p>
+<p>As a minor gripe, if you&rsquo;re going to use logging, please make it easy to turn off (meaning a top-level switch), or pipe output to a log file, or just use logging sparingly. Also, please document your code and give type signatures if you can. Julia packages are not the best documented in my experience, and this is a huge hinderance to newcomers like myself in contributing to the ecosystem.</p>
+<p>Thanks for reading and hope this helps!</p>
+<hr>
+<h6 id="1-i-acknowledge-that-particular-test-ordering-may-be-helpful-in-certain-kinds-of-integration-tests-particularly-with-expensive-operations-like-interacting-with-databases-but-the-risk-of-huge-coupled-code-blocks-remains-a-valid-criticism-in-any-case-i-am-talking-here-about-unit-tests-generally-these-should-be-isolated-where-possible">1. I acknowledge that particular test ordering may be helpful in certain kinds of integration tests, particularly with expensive operations like interacting with databases. But the risk of huge coupled code-blocks remains a valid criticism. In any case, I am talking here about unit tests. Generally, these should be isolated where possible.</h6>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
+    &copy;  Daniel Soutar 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

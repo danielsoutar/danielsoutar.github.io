@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Thoughts on Julia: An Engineer&#39;s Take (Part 1) | Daniel Soutar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while.">
+    <meta name="generator" content="Hugo 0.102.3" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 1)" />
+<meta property="og:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://danielsoutar.github.io/posts/thoughts-on-julia-1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-10-15T00:00:00+00:00" />
+
+<meta itemprop="name" content="Thoughts on Julia: An Engineer&#39;s Take (Part 1)">
+<meta itemprop="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while."><meta itemprop="datePublished" content="2022-10-15T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-10-15T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2243">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 1)"/>
+<meta name="twitter:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+I&rsquo;ve been ruminating on whether or not to write something like this for a while."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Daniel Soutar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/posts/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/projects/" title="Projects page">
+              Projects
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+      
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://danielsoutar.github.io/posts/thoughts-on-julia-1/&amp;title=Thoughts%20on%20Julia:%20An%20Engineer%27s%20Take%20%28Part%201%29" class="ananke-social-link linkedin no-underline" aria-label="share on LinkedIn">
+        
+        <span class="icon"> <svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+        
+      </a>
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Thoughts on Julia: An Engineer&#39;s Take (Part 1)</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-10-15T00:00:00Z">October 15, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="introduction">Introduction</h2>
+<p><em>Disclaimer: These views are my own and do not necessarily reflect the views of my employer.</em></p>
+<p>I&rsquo;ve been ruminating on whether or not to write something like this for a while. Unfortunately for Julia, there has been an extensive set of pretty damning articles over the years from multiple developers critical of the language and wider ecosystem and community. I attach just a few representative links here for reference:</p>
+<ul>
+<li><a href="https://danluu.com/julialang/">Dan Luu on bugs</a></li>
+<li><a href="https://yuri.is/not-julia/">Yuri Vishnevsky, on yet more bugs</a></li>
+<li><a href="https://viralinstruction.com/posts/badjulia/">Jakob Nissen on more language-specific issues</a></li>
+</ul>
+<p>I don&rsquo;t want to comment either way on these articles or the response from the community. Each of those individuals on a bad day is likely much smarter than I am, and with far greater experience of working with the Julia ecosystem. So I won&rsquo;t repeat past grievances or rebuttals.</p>
+<p>This article is more concerned with the practicalities of using Julia on a day-to-day basis, working on a production codebase. While there are certainly idiosyncracies of the particular codebase I am working with, I believe these issues apply generally to software engineers and developers curious about Julia and using it for their own ends. This isn&rsquo;t intended as a scathing indictment, but rather a perspective I wish someone else had written from when I started working with Julia. For reference, all discussion assumes Julia 1.6, the version I use at work at the time of writing.</p>
+<h2 id="preamble">Preamble</h2>
+<p>Fast forward to a few months of using Julia, and I was exasperated, despite high expectations initially. Some developers will complain about Julia having 1-based indexing, or having column-major ordering. With well-written code (i.e. using <code>begin</code> and <code>end</code> rather than naked indices), the former practically feels like an implementation detail and is a non-issue 99% of the time. Since my codebase doesn&rsquo;t really deal too often with matrices, column-major ordering isn&rsquo;t really an issue worth writing about either. In my opinion these are not hills worth dying on and you quickly forget about them when working on Julia for a while. My issues were typically less syntactical and more about usage.</p>
+<p>In some respects I really like the language, particularly with environments (far better than Python), and so my current view is somewhat mixed. In my opinion, I think the clearest-cut use-case for Julia is if you have a really big compute cluster to work with. The 1-based indexing, column-major ordering, and <a href="https://docs.julialang.org/en/v1/manual/parallel-computing/">rich set of parallel programming constructs</a> lead me to think that Julia&rsquo;s true purpose is to be a successor to Fortran. Certainly, these features would make translating old Fortran code a lot easier.</p>
+<p>This view is supported by the fact that Julia is one of just 4 languages in the <a href="https://www.avenga.com/magazine/julia-programming-language/">PetaFlop family</a> (the others being C, C++, and Fortran) and widely discussed in HPC news articles. If your use-case involves HPC, Julia is probably a very strong candidate. Unfortunately, not every use-case involves Cray supercomputers. Some code doesn&rsquo;t need to be optimised to the limits of your hardware. You might need robust packages, documentation, testing, good Stack Overflow answers that you totally didn&rsquo;t ctrl-c and ctrl-v, and so on. Boring? Probably, but that&rsquo;s what most developers care about. Data scientists may find Julia a good fit too, but I can&rsquo;t comment - I am in the vein of a more traditional engineering role and will talk more from that angle accordingly.</p>
+<p>For all the problems I describe, I think the language has real potential to be a challenger to Python. But that potential will only be realised if, at a minimum, <em>all</em> of the following problems are properly addressed. The Julia community might claim that these problems don&rsquo;t need fixing, or that their approximate solutions suffice. I respectfully disagree. That attitude would also be the main barrier to further adoption, because I&rsquo;m certainly not encouraged to use Julia with that kind of response. The Julia community might also claim such mainstream adoption is not a goal, or no longer a goal, and that&rsquo;s fine. But then their messaging should be adjusted accordingly - Julia isn&rsquo;t like Python with C-like performance, but a niche language, with niche trade-offs.</p>
+<p>Personally, I think such talk is defeatist, and rearranges the goalposts from Julia&rsquo;s original aims. Mainstream adoption should be a goal, Julia could achieve it, and the challenges associated with furthering the language (such as funding, widening the pool of willing core developers/maintainers, etc) can be greatly alleviated with wider adoption.</p>
+<p>With all of that said, onto the problems.</p>
+<h2 id="code-loading-and-evaluation">Code Loading and Evaluation</h2>
+<p>By far the most baffling problem on this list is to do with code loading, and how this plays so poorly with frequently used files, and tests (more on that in part 2).</p>
+<p>In Julia, if you want to use code from another package, Julia developers have made huge strides over the years and doing so is now by and large a pleasant experience thanks to pre-compilation. It is also straightforward. Say for example you&rsquo;re using a third-party package like <code>DataFrames.jl</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># main.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> DataFrames
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Do some stuff with DataFrames...</span>
+</span></span></code></pre></div><p>This syntax is both simple and efficient, because compilation is typically already done ahead of time and so evaluation/compilation time is reduced at the point of use. Additionally, if I have multiple files that work with <code>DataFrames</code>, each of these files may independently import that package without having to evaluate the same code multiple times. This is clearly stated in Julia&rsquo;s manual in the <a href="https://docs.julialang.org/en/v1/manual/code-loading/">Code Loading section</a>.</p>
+<p>By contrast, and in a complete reversal of what I suspect many newcomers would likely expect, using code from within your own codebase is more difficult and differs significantly! Let&rsquo;s say I have a general-purpose utilities file with various helper functions, custom exceptions, and/or other data types in my project:</p>
+<pre tabindex="0"><code>my-project/
+    | src/
+        | utilities.jl
+        | data-preprocessing.jl
+        | kernels.jl
+        | main.jl
+        ...
+</code></pre><p>With the following relation between files:</p>
+<p><img src="/images/include-diagram.svg" alt="Include diagram for an example Julia project" title="Hierarchy of includes for an example Julia project"></p>
+<p>You would think the language provides a simple, native mechanism for enabling this organisation of files efficiently. Unlike compiled languages, redundant <code>include</code>s in Julia have a <strong>runtime</strong> cost, which further motivates the need for something with similar semantics to how package loading works, or clearer guidance on package design. Sadly, this is not the case<sup>1</sup>. In Julia, a developer effectively has two options in order to access code in another file, assuming that <code>module</code>s are used. Assuming our <code>utilities.jl</code> file looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># utilities.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Utilities
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Maybe</span>{<span style="color:#66d9ef">T</span>} <span style="color:#f92672">=</span> <span style="color:#66d9ef">Union</span>{<span style="color:#66d9ef">T</span>,<span style="color:#66d9ef">Nothing</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Tensor <span style="color:#f92672">=</span> <span style="color:#66d9ef">Vector</span>{<span style="color:#66d9ef">Float32</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Utilities</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>println(<span style="color:#e6db74">&#34;I print every time I get included&#34;</span>)
+</span></span></code></pre></div><p>Then the first approach is to rely on transitive includes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># data-preprocessing.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Preprocessing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># The need for two dots is because we need to look one &#39;above&#39; the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># current module. In general, internal code is distinguished from</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3rd-party packages by the presence of these dots.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#f92672">..</span>Utilities<span style="color:#f92672">:</span> Maybe, Tensor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> return_maybe_tensor()<span style="color:#f92672">::</span><span style="color:#66d9ef">Maybe</span>{<span style="color:#66d9ef">Tensor</span>}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [<span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">3.0</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Preprocessing</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># kernels.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Kernels
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#f92672">..</span>Utilities<span style="color:#f92672">:</span> Maybe, Tensor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> convolve(
+</span></span><span style="display:flex;"><span>    image<span style="color:#f92672">::</span><span style="color:#66d9ef">Maybe</span>{<span style="color:#66d9ef">Tensor</span>}, kernel<span style="color:#f92672">::</span><span style="color:#66d9ef">Maybe</span>{<span style="color:#66d9ef">Tensor</span>}
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">::</span><span style="color:#66d9ef">Maybe</span>{<span style="color:#66d9ef">Tensor</span>}
+</span></span><span style="display:flex;"><span>    both_tensors_ready <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>isnothing(image) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>isnothing(kernel)
+</span></span><span style="display:flex;"><span>    both_tensors_ready <span style="color:#f92672">||</span> <span style="color:#66d9ef">return</span> nothing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> image <span style="color:#f92672">.*</span> kernel
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Kernels</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># main.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Require utilities.jl first despite never using it directly. Also don&#39;t</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># know what modules are in scope without redundant &#39;import&#39; statements.</span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;utilities.jl&#34;</span>)
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;data-preprocessing.jl&#34;</span>)
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;kernels.jl&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> get_data_and_run()
+</span></span><span style="display:flex;"><span>    image <span style="color:#f92672">=</span> Preprocessing<span style="color:#f92672">.</span>return_maybe_tensor()
+</span></span><span style="display:flex;"><span>    kernel <span style="color:#f92672">=</span> Preprocessing<span style="color:#f92672">.</span>return_maybe_tensor()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    convolved_image <span style="color:#f92672">=</span> Kernels<span style="color:#f92672">.</span>convolve(image, kernel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> convolved_image
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>println(get_data_and_run())
+</span></span></code></pre></div><p>Running this, we get:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project main.jl
+</span></span><span style="display:flex;"><span>I print every time I get included
+</span></span><span style="display:flex;"><span>Float32<span style="color:#f92672">[</span>1.0, 4.0, 9.0<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>So although individual files are not runnable (which means you need to import the entire package into the REPL to play around with, say, <code>convolve</code>), and you have this manual file/topology organisation inside <code>main.jl</code>, the advantage is that every file is only included once. If I understand correctly, this is the recommended approach. What if instead we flipped this and <code>include</code>d only the relevant files/modules per file?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># utilities.jl is the same as before.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># data-preprocessing.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Preprocessing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;utilities.jl&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#f92672">.</span>Utilities<span style="color:#f92672">:</span> Maybe, Tensor <span style="color:#75715e"># assumes utilities.jl contains similarly-named module</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Same as before</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Preprocessing</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># kernels.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Kernels
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;utilities.jl&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#f92672">.</span>Utilities<span style="color:#f92672">:</span> Maybe, Tensor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Same as before</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Kernels</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># main.jl</span>
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;data-preprocessing.jl&#34;</span>)
+</span></span><span style="display:flex;"><span>include(<span style="color:#e6db74">&#34;kernels.jl&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Same as before</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span></code></pre></div><p>And the result of running this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project main.jl 
+</span></span><span style="display:flex;"><span>I print every time I get included
+</span></span><span style="display:flex;"><span>I print every time I get included  <span style="color:#75715e"># Uh-oh!</span>
+</span></span><span style="display:flex;"><span>Float32<span style="color:#f92672">[</span>1.0, 4.0, 9.0<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>In the second case, we get a copy of <code>utilities.jl</code> in each module that actually uses it, and don&rsquo;t need to reference it anywhere else. That sounds like a plus. This also allows files to be individually <code>include</code>d without qualification, like in a REPL session (and reduces the amount of code that needs compiling when doing so). But the down-side is that we have wasted code evaluation due to <code>include</code>ing the utilities twice. As you can imagine for larger codebases, this can become a real problem, because code evaluation is not free - and this carries a latency penalty.</p>
+<p>For these reasons I would say the best all-round answer currently is to use <a href="https://github.com/Roger-luo/FromFile.jl"><code>FromFile.jl</code></a>. With an embarassingly simple macro, developers can load code from whatever file they like akin to how packages are loaded:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># utilities.jl is the same as before.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># data-preprocessing.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Preprocessing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Need to import FromFile, but get reference to file and module import</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># in a single line, a plus and not currently possible in Julia.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> FromFile<span style="color:#f92672">:</span> <span style="color:#a6e22e">@from</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@from</span> <span style="color:#e6db74">&#34;utilities.jl&#34;</span> <span style="color:#66d9ef">import</span> Utilities<span style="color:#f92672">:</span> Maybe, Tensor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Same as before</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Preprocessing</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># kernels.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Kernels
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># No need to import preprocessing stuff just to get some utilities</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> FromFile<span style="color:#f92672">:</span> <span style="color:#a6e22e">@from</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@from</span> <span style="color:#e6db74">&#34;utilities.jl&#34;</span> <span style="color:#66d9ef">import</span> Utilities<span style="color:#f92672">:</span> Maybe, Tensor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Same as before</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>  <span style="color:#75715e"># module Kernels</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># main.jl</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> FromFile<span style="color:#f92672">:</span> <span style="color:#a6e22e">@from</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@from</span> <span style="color:#e6db74">&#34;data-preprocessing.jl&#34;</span> <span style="color:#66d9ef">import</span> Preprocessing
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@from</span> <span style="color:#e6db74">&#34;kernels.jl&#34;</span> <span style="color:#66d9ef">import</span> Kernels
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Same as before</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ...</span>
+</span></span></code></pre></div><p>And the result of running this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>% julia --project main.jl
+</span></span><span style="display:flex;"><span>I print every time I get included  <span style="color:#75715e"># only evaluated once, good</span>
+</span></span><span style="display:flex;"><span>Float32<span style="color:#f92672">[</span>1.0, 4.0, 9.0<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>If the specified file has already been loaded, code evaluation is not repeated. This is far simpler to understand and crucially brings consistency in how both third-party as well as local code are treated. This feature is used extensively across my codebase, barring a small number of replaceable <code>include</code>s. I can safely say that there isn&rsquo;t a single reason why I would ever go back from this, because crucially <code>@from</code> enables nearly all of the same approaches with <code>include</code> with much greater flexibility on how files are structured. Why can&rsquo;t something like a native <code>include_once</code> keyword not live alongside <code>include</code>? The answer can&rsquo;t be a technical limitation in the runtime. Nor can it be performance-related - checking a file hasn&rsquo;t been <code>include</code>d already in <code>FromFile</code> is actually pretty simple and also fast.</p>
+<p>Perhaps the biggest issue here is that if the language has opinions on how code should be organised, it should make the &lsquo;right&rsquo; way the path of least resistance, which Julia absolutely does not do. The latter approach of duplicating <code>include</code>s is in my opinion what most developers will naturally gravitate towards, but over time and as a package grows in size the overhead from repeated code evaluation becomes a bigger issue. Having to manually memorise how your entire codebase is structured in order to avoid this issue seems like something that could, I don&rsquo;t know, be off-loaded to a computer maybe? Something like <code>include_once</code>, which is exactly what <code>FromFile</code> does.</p>
+<p>Regardless of whether one likes the idea of <code>include</code> being the standard means of code loading, the need for <a href="https://github.com/PetrKryslUCSD/FinEtools.jl/blob/main/src/allmodules.jl">long <code>allmodules.jl</code></a> files which handle the topological ordering of the file hierarchy in various packages is a symptom of a basic problem with the language&rsquo;s code loading facilities. I had a similar file to that <code>allmodules.jl</code> when I first joined, and now it is gone thanks to <code>FromFile</code>. That isn&rsquo;t a feature, even if the Julia community might pretend it is, it just looks like a nuisance that developers shouldn&rsquo;t need to deal with.</p>
+<p>While <code>FromFile</code> thankfully fixes this problem, it took more than 8 years for it to come into being. And developers still need to discover this library to begin with. As previously stated, if the language has views on this, they should either be enforcing this more explicitly, like in the runtime, and/or communicating this more clearly in things like the manual.</p>
+<p>I have other issues to cover, but this one definitely needed addressing first. The other issues are in part two.</p>
+<hr>
+<h6 id="1-the-prevailing-view-not-at-all-clear-from-the-julia-manual-appears-to-be-to-move-such-utilities-into-a-package-and-having-extremely-small-packages-while-this-sounds-fine-not-all-julia-code-is-going-to-be-open-source-and-having-to-maintain-multiple-packages-internally-is-clearly-much-more-of-a-faff-compared-to-just-having-a-few-medium-sized-files-that-arent-likely-to-be-used-anywhere-else-if-i-were-writing-a-julia-codebase-myself-i-would-investigate-packages-more-but-havent-tried-them-beyond-toy-examples">1. The prevailing view (not at all clear from the Julia manual) appears to be to move such utilities into a package and having extremely small packages. While this sounds fine, not all Julia code is going to be open-source and having to maintain multiple packages internally is clearly much more of a faff compared to just having a few medium-sized files that aren&rsquo;t likely to be used anywhere else. If I were writing a Julia codebase myself I would investigate packages more, but haven&rsquo;t tried them beyond toy examples.</h6>
+<h6 id="2-for-developers-unfamiliar-with-julia-julia-modules-are-effectively-like-namespaces-with-packages-being-akin-to-complete-units-of-software-for-instance-numpy-would-be-a-package-in-julia-terminology">2. For developers unfamiliar with Julia, Julia <code>module</code>s are effectively like namespaces, with &lsquo;packages&rsquo; being akin to complete units of software. For instance, <code>numpy</code> would be a package in Julia terminology.</h6>
+<h6 id="3-to-get-that-kind-of-error-you-would-include-the-file-outside-of-any-module-because-you-are-then-defining-the-same-module-in-the-global-scope-julia-will-spit-out-scary-looking-warnings-about-replacing-modules">3. To get that kind of error, you would <code>include</code> the file outside of any module. Because you are then defining the same module in the global scope, Julia will spit out scary-looking warnings about replacing modules.</h6>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
+    &copy;  Daniel Soutar 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    <a href="https://github.com/danielsoutar" target="_blank" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" rel="noopener" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+    <a href="https://www.linkedin.com/in/daniel-soutar" target="_blank" class="linkedin ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

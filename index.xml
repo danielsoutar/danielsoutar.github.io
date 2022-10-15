@@ -6,15 +6,25 @@
     <description>Recent content on Daniel Soutar</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Mon, 05 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://danielsoutar.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://danielsoutar.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>DRAFTThoughts on Julia: An Engineer&#39;s Perspective</title>
-      <link>https://danielsoutar.github.io/posts/thoughts-on-julia/</link>
-      <pubDate>Mon, 05 Sep 2022 00:00:00 +0000</pubDate>
+      <title>Thoughts on Julia: An Engineer&#39;s Take (Part 1)</title>
+      <link>https://danielsoutar.github.io/posts/thoughts-on-julia-1/</link>
+      <pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://danielsoutar.github.io/posts/thoughts-on-julia/</guid>
-      <description>Intro (~231 words) Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+      <guid>https://danielsoutar.github.io/posts/thoughts-on-julia-1/</guid>
+      <description>Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
 I&amp;rsquo;ve been ruminating on whether or not to write something like this for a while.</description>
+    </item>
+    
+    <item>
+      <title>Thoughts on Julia: An Engineer&#39;s Take (Part 2)</title>
+      <link>https://danielsoutar.github.io/posts/thoughts-on-julia-2/</link>
+      <pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://danielsoutar.github.io/posts/thoughts-on-julia-2/</guid>
+      <description>Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
+As the second part of my thoughts on Julia, I&amp;rsquo;d like to touch on latency and issues with testing.</description>
     </item>
     
     <item>
