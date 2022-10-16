@@ -42,7 +42,7 @@ I&rsquo;ve been ruminating on whether or not to write something like this for a 
 <meta itemprop="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
 I&rsquo;ve been ruminating on whether or not to write something like this for a while."><meta itemprop="datePublished" content="2022-10-15T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-10-15T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2243">
+<meta itemprop="wordCount" content="2174">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 1)"/>
 <meta name="twitter:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
@@ -215,7 +215,7 @@ I&rsquo;ve been ruminating on whether or not to write something like this for a 
         ...
 </code></pre><p>With the following relation between files:</p>
 <p><img src="/images/include-diagram.svg" alt="Include diagram for an example Julia project" title="Hierarchy of includes for an example Julia project"></p>
-<p>You would think the language provides a simple, native mechanism for enabling this organisation of files efficiently. Unlike compiled languages, redundant <code>include</code>s in Julia have a <strong>runtime</strong> cost, which further motivates the need for something with similar semantics to how package loading works, or clearer guidance on package design. Sadly, this is not the case<sup>1</sup>. In Julia, a developer effectively has two options in order to access code in another file, assuming that <code>module</code>s are used. Assuming our <code>utilities.jl</code> file looks like this:</p>
+<p>You would think the language provides a simple, native mechanism for enabling this organisation of files efficiently. Unlike compiled languages, redundant <code>include</code>s in Julia have a <strong>runtime</strong> cost, which further motivates the need for something with similar semantics to how package loading works, or clearer guidance on package design. Sadly, this is not the case<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. In Julia, a developer effectively has two options in order to access code in another file, assuming that <code>module</code>s are used. Assuming our <code>utilities.jl</code> file looks like this:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># utilities.jl</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">module</span> Utilities
 </span></span><span style="display:flex;"><span>
@@ -366,9 +366,14 @@ I&rsquo;ve been ruminating on whether or not to write something like this for a 
 <p>While <code>FromFile</code> thankfully fixes this problem, it took more than 8 years for it to come into being. And developers still need to discover this library to begin with. As previously stated, if the language has views on this, they should either be enforcing this more explicitly, like in the runtime, and/or communicating this more clearly in things like the manual.</p>
 <p>I have other issues to cover, but this one definitely needed addressing first. The other issues are in part two.</p>
 <hr>
-<h6 id="1-the-prevailing-view-not-at-all-clear-from-the-julia-manual-appears-to-be-to-move-such-utilities-into-a-package-and-having-extremely-small-packages-while-this-sounds-fine-not-all-julia-code-is-going-to-be-open-source-and-having-to-maintain-multiple-packages-internally-is-clearly-much-more-of-a-faff-compared-to-just-having-a-few-medium-sized-files-that-arent-likely-to-be-used-anywhere-else-if-i-were-writing-a-julia-codebase-myself-i-would-investigate-packages-more-but-havent-tried-them-beyond-toy-examples">1. The prevailing view (not at all clear from the Julia manual) appears to be to move such utilities into a package and having extremely small packages. While this sounds fine, not all Julia code is going to be open-source and having to maintain multiple packages internally is clearly much more of a faff compared to just having a few medium-sized files that aren&rsquo;t likely to be used anywhere else. If I were writing a Julia codebase myself I would investigate packages more, but haven&rsquo;t tried them beyond toy examples.</h6>
-<h6 id="2-for-developers-unfamiliar-with-julia-julia-modules-are-effectively-like-namespaces-with-packages-being-akin-to-complete-units-of-software-for-instance-numpy-would-be-a-package-in-julia-terminology">2. For developers unfamiliar with Julia, Julia <code>module</code>s are effectively like namespaces, with &lsquo;packages&rsquo; being akin to complete units of software. For instance, <code>numpy</code> would be a package in Julia terminology.</h6>
-<h6 id="3-to-get-that-kind-of-error-you-would-include-the-file-outside-of-any-module-because-you-are-then-defining-the-same-module-in-the-global-scope-julia-will-spit-out-scary-looking-warnings-about-replacing-modules">3. To get that kind of error, you would <code>include</code> the file outside of any module. Because you are then defining the same module in the global scope, Julia will spit out scary-looking warnings about replacing modules.</h6>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>The prevailing view (not at all clear from the Julia manual) appears to be to move such utilities into a package and having extremely small packages. While this sounds fine, not all Julia code is going to be open-source and having to maintain multiple packages internally is clearly much more of a faff compared to just having a few medium-sized files that aren&rsquo;t likely to be used anywhere else. If I were writing a Julia codebase myself I would investigate packages more, but haven&rsquo;t tried them beyond toy examples.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
 <ul class="pa0">
   
 </ul>

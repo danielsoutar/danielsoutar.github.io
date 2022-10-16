@@ -39,7 +39,7 @@
 <meta itemprop="name" content="Faster convolutions with Winograd (Part 2)">
 <meta itemprop="description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs."><meta itemprop="datePublished" content="2020-01-12T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-01-12T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3239">
+<meta itemprop="wordCount" content="3236">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Faster convolutions with Winograd (Part 2)"/>
 <meta name="twitter:description" content="A charming misadventure where we discover the Winograd convolution algorithm for CNNs."/>
@@ -180,14 +180,14 @@
     <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><!-- TODO: Move this series into the 'Posts' section rather than 'Projects'. -->
 <p>In this post I&rsquo;ll be introducing the Winograd algorithm, along with some snazzy pictures.</p>
 <p>If you haven&rsquo;t read part 1, I highly recommend it. That post gives a good motivation for why we want Winograd to start with.</p>
-<p>To remind you, Winograd is the algorithm used in MKL-DNN, cuDNN, Theano, Tensorflow, and PyTorch for computing 3x3 convolutions<sup>1</sup>. For some performance figures against the naive algorithm and <em>im2col</em>, a fast convolution algorithm, look for part 3 of this series. Those figures will show that the last 16 or so minutes of your life reading this post and the previous one were not, in fact, a complete waste of time.</p>
+<p>To remind you, Winograd is the algorithm used in MKL-DNN, cuDNN, Theano, Tensorflow, and PyTorch for computing 3x3 convolutions<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. For some performance figures against the naive algorithm and <em>im2col</em>, a fast convolution algorithm, look for part 3 of this series. Those figures will show that the last 16 or so minutes of your life reading this post and the previous one were not, in fact, a complete waste of time.</p>
 <p>For this post, we&rsquo;ll start off with an example, and then slowly uncover the mathematical background behind it. Then we&rsquo;ll step through the algorithm together. Alongside will be a smattering of pretty pictures, that try to give a visual intuition for how the computation is performed.</p>
 <p>As with the previous post, some basic understanding of convolutions is a prerequisite - and knowing what matrix-multiplies are, since that&rsquo;s what Winograd is built around. A beautiful intuition for these can be found on 3Blue1Brown&rsquo;s incredible &lsquo;Essence of Linear Algebra&rsquo; video series <a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">here</a>.</p>
 <h2 id="some-elephants-in-the-room">Some Elephants in the Room</h2>
 <p>Before we dive in, it&rsquo;s worth noting three things.</p>
 <p>The first is that <em>im2col</em>, although a fast algorithm, is fairly memory-hungry (see my previous post for more on this), which motivates the search for a better algorithm. The second thing is, surprisingly, <em>im2col</em> does not do the minimal number of floating-point (i.e. real) multiplications required for a convolution!</p>
 <p>This may seem surprising, especially if I tell you that a <strong>single</strong> dot product <em>does</em> do the provably minimal number of real multiplications. That is, functionally speaking, you cannot do a dot product with less than <em>n</em> floating-point multiplications, where <em>n</em> is the size of the vectors. But once you start doing multiple dot products with the same filter, it&rsquo;s a different story. Winograd is not just fast, but is faster than <em>im2col</em> primarily through this minimal number of multiplications at the expense of some comparatively small overhead.</p>
-<p>The more mathematically-familiar readers among you might now be thinking, &ldquo;well isn&rsquo;t that exactly what the FFT is for?&quot;<sup>2</sup>. You&rsquo;d be absolutely correct. But FFTs are problematic - there is the substantial overhead and memory involved in using complex numbers, and writing a good FFT routine is pretty hard. But the <em><strong>key</strong></em> reason, my third important point, is that the ubiquitous 3x3 filter size usually isn&rsquo;t large enough for the FFT to claw back the deficit over <em>im2col</em>. The exception is usually with very deep inputs, large images, or very large batch sizes. All of which are much more niche applications.</p>
+<p>The more mathematically-familiar readers among you might now be thinking, &ldquo;well isn&rsquo;t that exactly what the FFT is for?&rdquo;<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>. You&rsquo;d be absolutely correct. But FFTs are problematic - there is the substantial overhead and memory involved in using complex numbers, and writing a good FFT routine is pretty hard. But the <em><strong>key</strong></em> reason, my third important point, is that the ubiquitous 3x3 filter size usually isn&rsquo;t large enough for the FFT to claw back the deficit over <em>im2col</em>. The exception is usually with very deep inputs, large images, or very large batch sizes. All of which are much more niche applications.</p>
 <p>There is a delicate but very valuable middle-ground here, where <em>im2col</em> is at the mercy of memory issues, and the FFT is too heavyweight. A featherweight FFT would be perfect - the metaphoric &lsquo;Coke Light&rsquo; of FFTs, if you will. As it turns out, that is pretty much exactly what Winograd is. Read on&hellip;</p>
 <h2 id="the-contrived-example">The Contrived Example</h2>
 <p>I now present to you what is surely the most ridiculous motivation for any algorithm on the internet. Say we have a 1D input of length 4, a 1D filter of length 3, stride 1, and using valid padding. If we do a 1D convolution:</p>
@@ -200,7 +200,7 @@
 <p style="text-align: center; font-weight: bold; font-style: italic">two</p>
 <p>multiplications (or equivalently <code>fma</code>s), at the cost of:</p>
 <ul>
-<li>4 additions for the data<sup>3</sup></li>
+<li>4 additions for the data<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></li>
 <li>4 additions for the filter</li>
 <li>2 multiplications by a constant, also for the filter</li>
 <li>4 additions to add the intermediate terms for the final results</li>
@@ -260,9 +260,20 @@
 <p>That is an extremely impressive achievement, and a excellent example of hardware utilisation being totally dominated by algorithmic superiority (admittedly with a very well-optimised implementation of Winograd). You can check the paper for details, but on average Lavin and Gray&rsquo;s highly optimised routine was 3.41x faster than the best that cuDNN could do. Remember, this was on NVIDIA hardware, for VGG-19, with 32-bit floating-point data. NVIDIA rather quickly added a Winograd routine in the aftermath, with many other libraries following suit.</p>
 <p>That&rsquo;s all for now - hope you enjoyed this little misadventure, and check out part 3 for seeing the performance gains of Winograd on a production-grade deep neural network library!</p>
 <hr>
-<h6 id="1-i-am-not-kidding---literally-everyone-uses-winograd-for-3x3s">1. I am not kidding - literally everyone uses Winograd for 3x3s.</h6>
-<h6 id="2-if-you-dont-fully-understand-or-havent-come-across-the-fft-before-dont-worry-about-it-you-can-think-of-it-as-a-bigger-but-better-scaling-sibling-to-winograd-convolutions-i-may-do-a-post-on-the-fft-some-day-but-theres-literally-44200000-results-online-for-it-if-you-google-it">2. If you don&rsquo;t fully understand or haven&rsquo;t come across the FFT before, don&rsquo;t worry about it. You can think of it as a bigger-but-better-scaling sibling to Winograd convolutions. I may do a post on the FFT some day, but there&rsquo;s literally 44,200,000 results online for it if you Google it.</h6>
-<h6 id="3-you-can-just-negate-the-second-argument-for-the-subtraction-to-become-addition-likewise-divisions-can-be-represented-as-multiplying-by-1-over-the-divisor">3. You can just negate the second argument for the subtraction to become addition. Likewise divisions can be represented as multiplying by 1 over the divisor.</h6>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I am not kidding - literally everyone uses Winograd for 3x3s.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>If you don&rsquo;t fully understand or haven&rsquo;t come across the FFT before, don&rsquo;t worry about it. You can think of it as a bigger-but-better-scaling sibling to Winograd convolutions. I may do a post on the FFT some day, but there&rsquo;s literally 44,200,000 results online for it if you Google it.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>You can just negate the second argument for the subtraction to become addition. Likewise divisions can be represented as multiplying by 1 over the divisor.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
 <ul class="pa0">
   
 </ul>

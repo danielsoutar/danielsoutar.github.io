@@ -42,7 +42,7 @@ As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency a
 <meta itemprop="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
 As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency and issues with testing."><meta itemprop="datePublished" content="2022-10-15T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-10-15T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2432">
+<meta itemprop="wordCount" content="2431">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 2)"/>
 <meta name="twitter:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
@@ -216,7 +216,7 @@ As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency a
 <li><em>Julia runs tests eagerly, meaning tests are run in a fixed order and on a single thread</em></li>
 </ul>
 <p>This is daft for a language that, again, emphasises performance and testing. Running tests in a fixed order is widely considered a sub-optimal practice - Julia&rsquo;s testing macros enforce this as a convention. The way these macros work also means that they cannot be executed lazily by enclosing them in functions, because this plays badly with nested testsets and how they print results (<a href="https://github.com/JuliaLang/julia/issues/43662">see here for my ticket</a>). For large codebases, this means you better be comfortable sitting around waiting for your tests to run. Python by contrast has no such issues, with <code>unittest</code> and <code>pytest</code> both enabling pattern-matching, and the latter enabling parallelism. Python&rsquo;s low latency makes running a lot of tests often feel like a breeze compared to Julia as well.</p>
-<p>Another gripe is that the fixed order of execution also means developers can rely on this as a crutch, thereby getting into the really bad habit of coupling tests together via shared state<sup>1</sup>, resulting in massive, tightly-coupled blocks of code that are hundreds of lines long:</p>
+<p>Another gripe is that the fixed order of execution also means developers can rely on this as a crutch, thereby getting into the really bad habit of coupling tests together via shared state<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, resulting in massive, tightly-coupled blocks of code that are hundreds of lines long:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>foo <span style="color:#f92672">=</span> make_foo(<span style="color:#ae81ff">0</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@testset</span> <span style="color:#e6db74">&#34;increment_bar!&#34;</span> <span style="color:#66d9ef">begin</span>
@@ -270,7 +270,14 @@ As the second part of my thoughts on Julia, I&rsquo;d like to touch on latency a
 <p>As a minor gripe, if you&rsquo;re going to use logging, please make it easy to turn off (meaning a top-level switch), or pipe output to a log file, or just use logging sparingly. Also, please document your code and give type signatures if you can. Julia packages are not the best documented in my experience, and this is a huge hinderance to newcomers like myself in contributing to the ecosystem.</p>
 <p>Thanks for reading and hope this helps!</p>
 <hr>
-<h6 id="1-i-acknowledge-that-particular-test-ordering-may-be-helpful-in-certain-kinds-of-integration-tests-particularly-with-expensive-operations-like-interacting-with-databases-but-the-risk-of-huge-coupled-code-blocks-remains-a-valid-criticism-in-any-case-i-am-talking-here-about-unit-tests-generally-these-should-be-isolated-where-possible">1. I acknowledge that particular test ordering may be helpful in certain kinds of integration tests, particularly with expensive operations like interacting with databases. But the risk of huge coupled code-blocks remains a valid criticism. In any case, I am talking here about unit tests. Generally, these should be isolated where possible.</h6>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I acknowledge that particular test ordering may be helpful in certain kinds of integration tests, particularly with expensive operations like interacting with databases. But the risk of huge coupled code-blocks remains a valid criticism. In any case, I am talking here about unit tests. Generally, these should be isolated where possible.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
 <ul class="pa0">
   
 </ul>
