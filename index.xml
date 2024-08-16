@@ -6,15 +6,23 @@
     <description>Recent content on Daniel Soutar</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Sat, 15 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://danielsoutar.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 16 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://danielsoutar.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dividing and Conquering Nested Dictionaries</title>
+      <link>https://danielsoutar.github.io/posts/dividing-conquering-dicts/</link>
+      <pubDate>Fri, 16 Aug 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://danielsoutar.github.io/posts/dividing-conquering-dicts/</guid>
+      <description>Dictionaries for objects you&amp;rsquo;ve not encoded, or configuration settings are great, until they aren&amp;rsquo;t.</description>
+    </item>
+    
     <item>
       <title>Thoughts on Julia: An Engineer&#39;s Take (Part 1)</title>
       <link>https://danielsoutar.github.io/posts/thoughts-on-julia-1/</link>
       <pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate>
       
       <guid>https://danielsoutar.github.io/posts/thoughts-on-julia-1/</guid>
-      <description>Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
-I&amp;rsquo;ve been ruminating on whether or not to write something like this for a while.</description>
+      <description>Where I explain why Julia&amp;rsquo;s code loading is hugely unintuitive and awful to deal with.</description>
     </item>
     
     <item>
@@ -23,8 +31,7 @@ I&amp;rsquo;ve been ruminating on whether or not to write something like this fo
       <pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate>
       
       <guid>https://danielsoutar.github.io/posts/thoughts-on-julia-2/</guid>
-      <description>Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
-As the second part of my thoughts on Julia, I&amp;rsquo;d like to touch on latency and issues with testing.</description>
+      <description>Where I explain why the rest of Julia is hugely unintuitive and awful to deal with.</description>
     </item>
     
     <item>
@@ -60,8 +67,7 @@ As the second part of my thoughts on Julia, I&amp;rsquo;d like to touch on laten
       <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>https://danielsoutar.github.io/posts/my-first-post/</guid>
-      <description>Well here we are. My first proper post.
-I suppose I should clarify - I was mucking about with the Hugo framework, which is used to build this site.</description>
+      <description>A quick summary of how I came to make this website.</description>
     </item>
     
     <item>
@@ -70,8 +76,7 @@ I suppose I should clarify - I was mucking about with the Hugo framework, which 
       <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>https://danielsoutar.github.io/posts/my-second-post/</guid>
-      <description>Very creative on these two post titles. Promise that&amp;rsquo;ll change for future ones (assuming they get written&amp;hellip;).
-This post&amp;rsquo;s my last one for a short while, I suspect.</description>
+      <description>Rambling about The Handmaid&amp;rsquo;s Tale.</description>
     </item>
     
     <item>

@@ -6,8 +6,7 @@
     
     <title>Thoughts on Julia: An Engineer&#39;s Take (Part 1) | Daniel Soutar</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
-I&rsquo;ve been ruminating on whether or not to write something like this for a while.">
+    <meta name="description" content="Where I explain why Julia&rsquo;s code loading is hugely unintuitive and awful to deal with.">
     <meta name="generator" content="Hugo 0.102.3" />
     
     
@@ -31,22 +30,19 @@ I&rsquo;ve been ruminating on whether or not to write something like this for a 
     
     
     <meta property="og:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 1)" />
-<meta property="og:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
-I&rsquo;ve been ruminating on whether or not to write something like this for a while." />
+<meta property="og:description" content="Where I explain why Julia&rsquo;s code loading is hugely unintuitive and awful to deal with." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://danielsoutar.github.io/posts/thoughts-on-julia-1/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-10-15T00:00:00+00:00" />
 <meta property="article:modified_time" content="2022-10-15T00:00:00+00:00" />
 
 <meta itemprop="name" content="Thoughts on Julia: An Engineer&#39;s Take (Part 1)">
-<meta itemprop="description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
-I&rsquo;ve been ruminating on whether or not to write something like this for a while."><meta itemprop="datePublished" content="2022-10-15T00:00:00+00:00" />
+<meta itemprop="description" content="Where I explain why Julia&rsquo;s code loading is hugely unintuitive and awful to deal with."><meta itemprop="datePublished" content="2022-10-15T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-10-15T00:00:00+00:00" />
 <meta itemprop="wordCount" content="2174">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Thoughts on Julia: An Engineer&#39;s Take (Part 1)"/>
-<meta name="twitter:description" content="Introduction Disclaimer: These views are my own and do not necessarily reflect the views of my employer.
-I&rsquo;ve been ruminating on whether or not to write something like this for a while."/>
+<meta name="twitter:description" content="Where I explain why Julia&rsquo;s code loading is hugely unintuitive and awful to deal with."/>
 
 	
   </head>
@@ -179,6 +175,9 @@ I&rsquo;ve been ruminating on whether or not to write something like this for a 
       
 
       
+      
+        <span class="f6 mv4 dib tracked"> - 11 minutes read </span>
+        <span class="f6 mv4 dib tracked"> - 2174 words </span>
       
     </header>
     <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="introduction">Introduction</h2>
@@ -396,7 +395,7 @@ I&rsquo;ve been ruminating on whether or not to write something like this for a 
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://danielsoutar.github.io" >
-    &copy;  Daniel Soutar 2022 
+    &copy;  Daniel Soutar 2024 
   </a>
     <div>
 <div class="ananke-socials">
